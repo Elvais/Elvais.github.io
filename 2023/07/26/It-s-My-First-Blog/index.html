@@ -216,54 +216,56 @@
 </ol>
 <p>无序列表：</p>
 <ul>
-<li><p>绿色心情</p>
-</li>
-<li><p>小布丁</p>
-</li>
-<li><p>随便</p>
-</li>
+<li>绿色心情</li>
+<li>小布丁</li>
+<li>随便</li>
 </ul>
 <p>明天要做的事</p>
 <ul>
-<li><input checked="" disabled="" type="checkbox"> 吃饭</li>
-<li><input disabled="" type="checkbox"> 睡觉</li>
-<li><input disabled="" type="checkbox"> 打豆豆</li>
+<li>[x] 吃饭</li>
+<li>[ ] 睡觉</li>
+<li>[ ] 打豆豆</li>
 </ul>
 <p>代码块</p>
 <figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br></pre></td></tr></tbody></table></figure>
-
-
-
-<p>数学公式<br>$$<br>\frac{\partial f}{\partial x} = 2\sqrt{a}x<br>$$</p>
-<p>表格</p>
+<p>数学公式</p>
+<script type="math/tex; mode=display">
+\frac{\partial f}{\partial x} = 2\sqrt{a}x</script><p>表格</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">姓名</th>
-<th align="center">年龄</th>
-<th align="center">成绩</th>
+<th style="text-align:center">姓名</th>
+<th style="text-align:center">年龄</th>
+<th style="text-align:center">成绩</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">张三</td>
-<td align="center">19</td>
-<td align="center">99</td>
+<tbody>
+<tr>
+<td style="text-align:center">张三</td>
+<td style="text-align:center">19</td>
+<td style="text-align:center">99</td>
 </tr>
 <tr>
-<td align="center">李四</td>
-<td align="center">15</td>
-<td align="center">87</td>
+<td style="text-align:center">李四</td>
+<td style="text-align:center">15</td>
+<td style="text-align:center">87</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>脚注</p>
-<p>一键三连<a href="%E7%82%B9%E8%B5%9E%E3%80%81%E6%8A%95%E5%B8%81%E3%80%81%E6%94%B6%E8%97%8F">^三连</a></p>
+<p>一键三连<sup><a href="#fn_三连" id="reffn_三连">三连</a></sup></p>
 <hr>
-<p><a href="baidu.com%22%E4%B8%80%E4%B8%AA%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E%22">百度</a></p>
-<p>请参考<a href="#%E8%BF%99%E6%98%AF%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87Blog">这是我的第一篇Blog</a></p>
+<blockquote id="fn_三连">
+<sup>三连</sup>. 点赞、投币、收藏<a href="#reffn_三连" title="Jump back to footnote [三连] in the text."> ↩</a>
+</blockquote>
+<p><a href="baidu.com&quot;一个搜索引擎&quot;">百度</a></p>
+<p>请参考<a href="#这是我的第一篇Blog">这是我的第一篇Blog</a></p>
 <p>ULR:</p>
-<p><a target="_blank" rel="noopener" href="http://www.baidu.com/">http://www.baidu.com</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.baidu.com">http://www.baidu.com</a></p>
 <p>图片链接</p>
-<p><img src="https://www.baidu.com/img/bd_logo1.png?where=super%22%E7%99%BE%E5%BA%A6%E6%90%9C%E7%B4%A2%22" alt="百度"></p>
+<p><img src="https://www.baidu.com/img/bd_logo1.png?where=super&quot;百度搜索&quot;" alt="百度"></p>
 <p><em>斜体</em>  </p>
 <p><strong>加粗</strong></p>
 <p><code>printf</code></p>
@@ -317,6 +319,8 @@
             </div>
         </section>
         <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2023/07/30/R/">R语言包的实现——分组数据的回归分析</a>
             
             
             <a class="next" rel="next" href="/2023/07/24/hello-world/">Hello World</a>
