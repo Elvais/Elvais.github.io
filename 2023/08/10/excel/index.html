@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="WuXin">
+
+
+
+
+
+<title>EXCEL数据分析常用函数 | Hexo</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+    <link rel="stylesheet" href="/../fonts/iconfont2/iconfont.css">
+    
+    <link rel="stylesheet" href="/../fonts/iconfont3/iconfont.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+            <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+        
+    
+
+
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Elva&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">📑Posts</a>
+                
+                    <a class="menu-item" href="/category">🗃Categories</a>
+                
+                    <a class="menu-item" href="/tag">🔖Tags</a>
+                
+                    <a class="menu-item" href="/about">💡About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Elva&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">📑Posts</a>
+                
+                    <a class="menu-item" href="/category">🗃Categories</a>
+                
+                    <a class="menu-item" href="/tag">🔖Tags</a>
+                
+                    <a class="menu-item" href="/about">💡About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">EXCEL数据分析常用函数</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">WuXin</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">August 10, 2023&nbsp;&nbsp;20:49:49</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/">学习记录</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="EXCEL数据分析常用函数"><a href="#EXCEL数据分析常用函数" class="headerlink" title="EXCEL数据分析常用函数"></a>EXCEL数据分析常用函数</h2><blockquote>
+<p>写在前面：EXCEL一些常用于数据分析中的函数</p>
+</blockquote>
+<h2 id="1-SUM"><a href="#1-SUM" class="headerlink" title="1. SUM"></a>1. SUM</h2><p>两种使用方法：</p>
+<ol>
+<li>SUM(number1, number2, …)</li>
+<li>SUM(area)</li>
+</ol>
+<h2 id="2-SUMIF-单条件求和"><a href="#2-SUMIF-单条件求和" class="headerlink" title="2. SUMIF-单条件求和"></a>2. SUMIF-单条件求和</h2><figure class="highlight excel"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">SUMIF</span>(条件判断区域, 条件, 求和的数值区域)</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="3-SUMIFS-多条件求和"><a href="#3-SUMIFS-多条件求和" class="headerlink" title="3. SUMIFS-多条件求和"></a>3. SUMIFS-多条件求和</h2><figure class="highlight excel"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">SUMIF</span>(求和的数值区域,条件判断区域<span class="number">1</span>, 条件<span class="number">1</span>, 条件判断区域<span class="number">2</span>, 条件<span class="number">2</span>,...)</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>注：</strong>SUMIFS和SUMIF区别是：</p>
+<ul>
+<li><strong>SUMIF</strong>将<u>求和的数值区域</u>放在<strong>最后</strong></li>
+<li><strong>SUMIFS</strong>将<u>求和的数值区域</u>放在<strong>最前面</strong></li>
+</ul>
+<h2 id="4-SUBTOTAL"><a href="#4-SUBTOTAL" class="headerlink" title="4. SUBTOTAL"></a>4. SUBTOTAL</h2><figure class="highlight excel"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">SUBTOTAL</span>(指定函数num，求值区域)</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>注：</strong>SUM和SUMTOTAL区别是：</p>
+<ul>
+<li><strong>SUM</strong>运算<strong>无法随筛选改变</strong></li>
+<li><strong>SUMTOTAL</strong> 运算时，当对数据源筛选时，SUBTOTAL都可以<strong>随筛选改变</strong></li>
+</ul>
+<h2 id="5-IF"><a href="#5-IF" class="headerlink" title="5. IF"></a>5. IF</h2><figure class="highlight excel"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">IF</span>(条件,条件为真时的值, 条件为假时的值)</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>注：</strong>IF函数常用于嵌套</p>
+<figure class="highlight excel"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">=<span class="built_in">IF</span>(<span class="symbol">C80</span>&gt;<span class="number">10000</span>, <span class="built_in">IF</span>(<span class="symbol">D80</span>&lt;<span class="number">5000</span>,<span class="string">"达标"</span>,<span class="string">"不达标"</span>),<span class="string">"不达标"</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="6-VLOOKUP"><a href="#6-VLOOKUP" class="headerlink" title="6. VLOOKUP"></a>6. VLOOKUP</h2><figure class="highlight excel"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">VLOOKUP</span>(查找值，查找区域，列索引，匹配方式<span class="number">0</span>/<span class="number">1</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>注：</strong></p>
+<ol>
+<li>VLOOKUP 模糊匹配并不是真正意义上的模糊匹配</li>
+<li>要实现真正的模糊匹配，需要在查找值后加上通配符<ul>
+<li>匹配以a开头的数值——就用”&amp;”+”*”</li>
+<li>匹配以b开头且<strong>接指定字符数</strong>的数值——就用”&amp;”+”??…”</li>
+</ul>
+</li>
+<li>VLOOKUP匹配只会返回到第一个数值</li>
+</ol>
+<h2 id="7-MATCH"><a href="#7-MATCH" class="headerlink" title="7. MATCH"></a>7. MATCH</h2><figure class="highlight excel"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">MATCH</span>(查找值，查找行/列,<span class="number">0</span>/<span class="number">1</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>注：</strong>在选定的行或者列中查找目标值所在其中的<strong>位置</strong></p>
+<h2 id="8-INDEX"><a href="#8-INDEX" class="headerlink" title="8. INDEX"></a>8. INDEX</h2><figure class="highlight excel"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">INDEX</span>(区域, 行号, 列号)</span><br></pre></td></tr></tbody></table></figure>
+
+<ol>
+<li>返回选定区域中<strong>行号与列号交叉选中</strong>的数据</li>
+<li>若<strong>行号为0</strong>，则返回<strong>整行</strong>；<strong>列号为0</strong>，则返回<strong>整列</strong></li>
+</ol>
+<h2 id="9-INDEX和MATCH拓展作用"><a href="#9-INDEX和MATCH拓展作用" class="headerlink" title="9. INDEX和MATCH拓展作用"></a>9. INDEX和MATCH拓展作用</h2><h3 id="9-1-INDEX-MATCH—实现匹配文本"><a href="#9-1-INDEX-MATCH—实现匹配文本" class="headerlink" title="9.1 INDEX+MATCH—实现匹配文本"></a>9.1 INDEX+MATCH—实现匹配文本</h3><figure class="highlight excel"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">INDEX</span>(区域, <span class="built_in">MATCH</span>(行查找项,查找区域 ,<span class="number">0</span>), 列号(列查找项, 查找区域,<span class="number">0</span>))</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="9-2-SUMIFS-INDEX-MATCH—实现聚合运算"><a href="#9-2-SUMIFS-INDEX-MATCH—实现聚合运算" class="headerlink" title="9.2 SUMIFS+INDEX+MATCH—实现聚合运算"></a>9.2 SUMIFS+INDEX+MATCH—实现聚合运算</h3><figure class="highlight excel"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">SUMIFS</span>(<span class="built_in">INDEX</span>(查找区域, <span class="built_in">MATCH</span>(查找值,查找行/列,<span class="number">0</span>), <span class="number">0</span>),条件区域<span class="number">1</span>,条件<span class="number">1</span>,...)</span><br></pre></td></tr></tbody></table></figure>
+
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://example.com/2023/08/10/excel/">http://example.com/2023/08/10/excel/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Excel/"># Excel</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2023/08/11/mysql/">Mysql学习笔记-基础语法和高级用法</a>
+            
+            
+            <a class="next" rel="next" href="/2023/08/08/graduation-issue/">基于和Word2vec和BiLSTM的微博用户情感分析——以新十条”疫情政策为例</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+  
+ <div id="gitalk-container"></div>  
+ 
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+ var gitalk = new Gitalk({  
+ clientID: 'b647c2f85009b1355e1d',  
+ clientSecret: 'b034ae0bf07e04f8819c52eb0e948a378dcbf524',  
+ repo: 'Elvais.github.io',  
+ owner: 'Elvais',  
+ admin: 'Elvais',  
+ id: location.pathname,  
+ labels: 'Gitalk'.split(',').filter(l => l),  
+ perPage: 10,  
+ pagerDirection: 'last',  
+ proxy: 'https://netnr-proxy.cloudno.de/https://github.com/login/oauth/access_token',
+ createIssueManually: true,  
+ distractionFreeMode: true  
+ })  
+ gitalk.render('gitalk-container')  
+</script>  
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© WuXin | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

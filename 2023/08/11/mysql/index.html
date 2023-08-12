@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="WuXin">
+
+
+
+
+
+<title>Mysql学习笔记-基础语法和高级用法 | Hexo</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+    <link rel="stylesheet" href="/../fonts/iconfont2/iconfont.css">
+    
+    <link rel="stylesheet" href="/../fonts/iconfont3/iconfont.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+            <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+        
+    
+
+
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Elva&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">📑Posts</a>
+                
+                    <a class="menu-item" href="/category">🗃Categories</a>
+                
+                    <a class="menu-item" href="/tag">🔖Tags</a>
+                
+                    <a class="menu-item" href="/about">💡About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Elva&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">📑Posts</a>
+                
+                    <a class="menu-item" href="/category">🗃Categories</a>
+                
+                    <a class="menu-item" href="/tag">🔖Tags</a>
+                
+                    <a class="menu-item" href="/about">💡About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Mysql学习笔记-基础语法和高级用法</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">WuXin</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">August 11, 2023&nbsp;&nbsp;16:48:48</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/">学习记录</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="Mysql学习笔记"><a href="#Mysql学习笔记" class="headerlink" title="Mysql学习笔记"></a>Mysql学习笔记</h2><blockquote>
+<p>基于公开网站sqlzoo，学习来源为B站-戴师兄</p>
+</blockquote>
+<h3 id="1-基础语法"><a href="#1-基础语法" class="headerlink" title="1. 基础语法"></a>1. 基础语法</h3><h4 id="1-1-SELECT-FROM"><a href="#1-1-SELECT-FROM" class="headerlink" title="1.1 SELECT &amp; FROM"></a>1.1 SELECT &amp; FROM</h4><ul>
+<li>SELECT：字段名</li>
+<li>FROM：表名</li>
+</ul>
+<h5 id="a-基础示例"><a href="#a-基础示例" class="headerlink" title="a. 基础示例"></a>a. 基础示例</h5><figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> name, continent, population <span class="keyword">FROM</span> world</span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<h5 id="b-查询所有字段"><a href="#b-查询所有字段" class="headerlink" title="b. 查询所有字段"></a>b. 查询所有字段</h5><figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> world</span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<h5 id="c-别名：字段后-AS-可省略-别名"><a href="#c-别名：字段后-AS-可省略-别名" class="headerlink" title="c. 别名：字段后 + AS(可省略) + ***(别名)"></a>c. 别名：字段后 + AS(可<strong>省略</strong>) + ***(别名)</h5><figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> name <span class="keyword">as</span> 国家名,</span><br><span class="line">continent <span class="keyword">as</span> 大洲,</span><br><span class="line">population <span class="keyword">as</span> 人口</span><br><span class="line"><span class="keyword">FROM</span> world</span><br></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> name 国家名,</span><br><span class="line">continent 大洲,</span><br><span class="line">population 人口</span><br><span class="line"><span class="keyword">FROM</span> world</span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<h5 id="d-去重：DISTINCT，位置在SELECT后面，而非字段前面"><a href="#d-去重：DISTINCT，位置在SELECT后面，而非字段前面" class="headerlink" title="d. 去重：DISTINCT，位置在SELECT后面，而非字段前面"></a>d. 去重：DISTINCT，位置在<u>SELECT后面，而非字段前面</u></h5><figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> continent <span class="keyword">from</span> world</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>注：</strong>如果后面有<strong>多个字段</strong>，则只有<strong>所有字段相同</strong>时才<strong>去重</strong></p>
+<p>e. 计算字段</p>
+<p>ex: 计算人均GDP</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> gdp<span class="operator">/</span>population 人均gdp <span class="keyword">from</span> world</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="1-2-WHERE——筛选条件"><a href="#1-2-WHERE——筛选条件" class="headerlink" title="1.2 WHERE——筛选条件"></a>1.2 WHERE——筛选条件</h4><h5 id="a-标准语法"><a href="#a-标准语法" class="headerlink" title="a. 标准语法"></a>a. 标准语法</h5><figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> 字段名</span><br><span class="line"><span class="keyword">FROM</span> 表</span><br><span class="line"><span class="keyword">WHERE</span> 表达式</span><br></pre></td></tr></tbody></table></figure>
+
+<p>WHERE表达式——限定<strong>查询必须满足的条件</strong></p>
+<p>示例：</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> name,</span><br><span class="line">gdp<span class="operator">/</span>population 人均gdp </span><br><span class="line"><span class="keyword">FROM</span> world</span><br><span class="line"><span class="keyword">WHERE</span> population <span class="operator">&gt;=</span> <span class="number">200000000</span></span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<h5 id="b-运算符"><a href="#b-运算符" class="headerlink" title="b. 运算符"></a>b. 运算符</h5><table>
+<thead>
+<tr>
+<th align="center">**运算符 **</th>
+<th align="center"><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">&gt;  = &lt;</td>
+<td align="center">大于/等于/小于</td>
+</tr>
+<tr>
+<td align="center">&gt;=  &lt;=</td>
+<td align="center">大于等于/小于等于</td>
+</tr>
+<tr>
+<td align="center">&lt;&gt; 或者 !=</td>
+<td align="center">不等于</td>
+</tr>
+<tr>
+<td align="center">BETWEEN… AND…</td>
+<td align="center">介于</td>
+</tr>
+<tr>
+<td align="center">IN/NOT IN ()</td>
+<td align="center">在/不在该条件范围</td>
+</tr>
+<tr>
+<td align="center">IS NULL/IS NOT NULL</td>
+<td align="center">是/不是空值</td>
+</tr>
+<tr>
+<td align="center">AND/OR</td>
+<td align="center">且/或</td>
+</tr>
+<tr>
+<td align="center">NOT</td>
+<td align="center">非</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>注意区分是<null>还是null，前者是sql<strong>默认空值</strong>，后者是<strong>字符串</strong>，前者用IS NULL判断，后者用=’null’判断</null></p>
+</li>
+<li><p>BETWEEN 和 AND 去掉边界值可以利用’!=’</p>
+</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> population</span><br><span class="line"><span class="keyword">FROM</span> world</span><br><span class="line"><span class="keyword">WHERE</span> name <span class="operator">=</span> <span class="string">'Germany'</span></span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> name, population</span><br><span class="line"><span class="keyword">FROM</span> world</span><br><span class="line"><span class="keyword">WHERE</span> name <span class="keyword">in</span> (<span class="string">'Sweden'</span>,<span class="string">'Norway'</span>,<span class="string">'Denmark'</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> name, area</span><br><span class="line"><span class="keyword">FROM</span> world</span><br><span class="line"><span class="keyword">WHERE</span> area <span class="keyword">BETWEEN</span> <span class="number">250000</span> <span class="keyword">AND</span> <span class="number">300000</span></span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<h5 id="c-模糊查询LIKE"><a href="#c-模糊查询LIKE" class="headerlink" title="c. 模糊查询LIKE"></a>c. 模糊查询LIKE</h5><table>
+<thead>
+<tr>
+<th align="center">通配符</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">%</td>
+<td align="center">任意字符出现<strong>任意</strong>次数</td>
+</tr>
+<tr>
+<td align="center">_</td>
+<td align="center">任意字符出现<strong>一次</strong></td>
+</tr>
+</tbody></table>
+<p>示例：</p>
+<p>查询以C开头ia结尾的国家：</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> name</span><br><span class="line"><span class="keyword">FROM</span> world</span><br><span class="line"><span class="keyword">WHERE</span> name <span class="keyword">LIKE</span> <span class="string">'C%ia'</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>查询第二个子字符为’t’的国家：</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> name</span><br><span class="line"><span class="keyword">FROM</span> world</span><br><span class="line"><span class="keyword">WHERE</span> name <span class="keyword">LIKE</span> <span class="string">'_t%'</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>查询国家名中含有两个’o’且被两个字符隔开的的国家：</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> name</span><br><span class="line"><span class="keyword">FROM</span> world</span><br><span class="line"><span class="keyword">WHERE</span> name <span class="keyword">LIKE</span> <span class="string">'%o__o%'</span></span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<h5 id="d-模糊查询REGEXP"><a href="#d-模糊查询REGEXP" class="headerlink" title="d. 模糊查询REGEXP"></a>d. 模糊查询REGEXP</h5><table>
+<thead>
+<tr>
+<th align="center">通配符</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">^</td>
+<td align="center">以指定字符开头</td>
+</tr>
+<tr>
+<td align="center">$</td>
+<td align="center">以指定字符结尾</td>
+</tr>
+<tr>
+<td align="center">[]</td>
+<td align="center">多范围条件搜索，如REGEXP a[cde] 或者REGEXP a[c-e]表示查询包含ac/ad/ae的字符</td>
+</tr>
+</tbody></table>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span></span><br><span class="line"><span class="keyword">FROM</span> world</span><br><span class="line"><span class="keyword">WHERE</span> name REGEXP <span class="string">'^a'</span></span><br></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span></span><br><span class="line"><span class="keyword">FROM</span> world</span><br><span class="line"><span class="keyword">WHERE</span> name REGEXP <span class="string">'a$'</span></span><br></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span></span><br><span class="line"><span class="keyword">FROM</span> world</span><br><span class="line"><span class="keyword">WHERE</span> name REGEXP <span class="string">'a'</span></span><br></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span></span><br><span class="line"><span class="keyword">FROM</span> world</span><br><span class="line"><span class="keyword">WHERE</span> name REGEXP <span class="string">'a[e-h]'</span></span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<h5 id="e-多条件查询—AND-OR"><a href="#e-多条件查询—AND-OR" class="headerlink" title="e. 多条件查询—AND OR"></a>e. 多条件查询—AND OR</h5><p>查询国家名中含3个’a’且面积大于60万的国家名：</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> name</span><br><span class="line"><span class="keyword">FROM</span> world</span><br><span class="line"><span class="keyword">WHERE</span> name <span class="keyword">LIKE</span> <span class="string">'%a%a%a%'</span></span><br><span class="line"><span class="keyword">AND</span> area <span class="operator">&gt;</span> <span class="number">600000</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>查询国家名中含3个’a’且面积大于60万/人口大于13亿且面积大于500万的国家名：</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> name</span><br><span class="line"><span class="keyword">FROM</span> world</span><br><span class="line"><span class="keyword">WHERE</span> name <span class="keyword">LIKE</span> <span class="string">'%a%a%a%'</span><span class="keyword">AND</span> area <span class="operator">&gt;</span> <span class="number">600000</span></span><br><span class="line"><span class="keyword">OR</span> population <span class="operator">&gt;</span> <span class="number">1300000000</span> <span class="keyword">AND</span> area <span class="operator">&gt;</span> <span class="number">5000000</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>**注：AND 优先级大于 OR **，可以用()便于阅读</p>
+<h5 id="f-例题"><a href="#f-例题" class="headerlink" title="f. 例题"></a>f. 例题</h5><p>👍Find the country that has all the vowels and no spaces in its name.</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> name</span><br><span class="line"><span class="keyword">FROM</span> world</span><br><span class="line"><span class="keyword">WHERE</span> name <span class="keyword">LIKE</span> <span class="string">'%a%'</span></span><br><span class="line"><span class="keyword">AND</span> name <span class="keyword">LIKE</span> <span class="string">'%e%'</span></span><br><span class="line"><span class="keyword">AND</span> name <span class="keyword">LIKE</span> <span class="string">'%i%'</span></span><br><span class="line"><span class="keyword">AND</span> name <span class="keyword">LIKE</span> <span class="string">'%o%'</span></span><br><span class="line"><span class="keyword">AND</span> name <span class="keyword">LIKE</span> <span class="string">'%u%'</span></span><br><span class="line"><span class="keyword">AND</span> name <span class="keyword">NOT</span> <span class="keyword">LIKE</span> <span class="string">'% %'</span></span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<h3 id="1-3-ORDER-BY—排序"><a href="#1-3-ORDER-BY—排序" class="headerlink" title="1.3 ORDER BY—排序"></a>1.3 ORDER BY—排序</h3><h5 id="a-标准语法-1"><a href="#a-标准语法-1" class="headerlink" title="a. 标准语法"></a>a. 标准语法</h5><figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> 字段名</span><br><span class="line"><span class="keyword">FROM</span> 表</span><br><span class="line"><span class="keyword">WHERE</span> 表达式</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> 字段名 <span class="keyword">asc</span><span class="operator">/</span><span class="keyword">desc</span></span><br></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span></span><br><span class="line"><span class="keyword">FROM</span> nobel</span><br><span class="line"><span class="keyword">WHERE</span> winner <span class="keyword">LIKE</span> <span class="string">'Sir%'</span></span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> yr <span class="keyword">desc</span>, winner <span class="keyword">asc</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>注：</strong>默认排序方式为升序asc</p>
+<p><strong>例题</strong></p>
+<p>Show the 1984 winners and subject ordered by subject and winner name; but list chemistry and physics last.</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> winner,subject</span><br><span class="line"><span class="keyword">FROM</span> nobel</span><br><span class="line"><span class="keyword">WHERE</span> yr <span class="operator">=</span> <span class="number">1984</span></span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> subject <span class="keyword">IN</span> (<span class="string">'chemistry'</span>,<span class="string">'physics'</span>), subject, winner</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>注：subject IN (‘chemistry’,’physics’) 可以视为一个值</strong>- it will be <strong>0</strong> or <strong>1</strong>.</p>
+<h3 id="1-4-LIMIT-限制排序"><a href="#1-4-LIMIT-限制排序" class="headerlink" title="1.4 LIMIT-限制排序"></a>1.4 LIMIT-限制排序</h3><h5 id="a-标准语法-2"><a href="#a-标准语法-2" class="headerlink" title="a. 标准语法"></a>a. 标准语法</h5><figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> 字段名</span><br><span class="line"><span class="keyword">FROM</span> 表</span><br><span class="line"><span class="keyword">WHERE</span> 表达式</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> 字段名 <span class="keyword">asc</span><span class="operator">/</span><span class="keyword">desc</span></span><br><span class="line">LIMIT (位置偏移量), 行数</span><br></pre></td></tr></tbody></table></figure>
+
+<p>注：</p>
+<ul>
+<li><p>LIMIT 3,4表示第<strong>4</strong>行到第7行</p>
+</li>
+<li><p>LIMIT子句在查询语句中<strong>最后一行</strong></p>
+</li>
+</ul>
+<h3 id="1-5-聚合函数—GROUP-BY"><a href="#1-5-聚合函数—GROUP-BY" class="headerlink" title="1.5 聚合函数—GROUP BY"></a>1.5 聚合函数—GROUP BY</h3><h5 id="a-标准语法-3"><a href="#a-标准语法-3" class="headerlink" title="a. 标准语法"></a>a. 标准语法</h5><figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> 字段名</span><br><span class="line"><span class="keyword">FROM</span> 表</span><br><span class="line"><span class="keyword">WHERE</span> 表达式</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> 字段名</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> 字段名 <span class="keyword">asc</span><span class="operator">/</span><span class="keyword">desc</span></span><br><span class="line">LIMIT (位置偏移量), 行数</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>注：</strong></p>
+<ul>
+<li><p>GROUP BY依据相同字段值<strong>分组</strong>后进行<strong>聚合</strong>运算，常与<strong>聚合函数联用</strong></p>
+</li>
+<li><p>GROUP BY 在<strong>WHERE</strong>和<strong>ORDER BY</strong>之间</p>
+</li>
+<li><p>单独使用聚合函数时，SELECT字句中<strong>只能使用聚合函数如SUN(GDP)、AVG(GDP)<strong>，但</strong>不能使用字段名</strong>如name</p>
+</li>
+</ul>
+<h5 id="b-聚合函数和GROUP-BY"><a href="#b-聚合函数和GROUP-BY" class="headerlink" title="b. 聚合函数和GROUP BY"></a>b. 聚合函数和GROUP BY</h5><p><strong>单独使用聚合函数</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">聚合函数</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">SUM</td>
+<td align="center">求和</td>
+</tr>
+<tr>
+<td align="center">AVG</td>
+<td align="center">平均值</td>
+</tr>
+<tr>
+<td align="center">MAX</td>
+<td align="center">最大值</td>
+</tr>
+<tr>
+<td align="center">MIN</td>
+<td align="center">最小值</td>
+</tr>
+<tr>
+<td align="center"><strong>COUNT</strong></td>
+<td align="center">计算表格行数</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<p><strong>注：</strong></p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="built_in">COUNT</span>(NAME),</span><br><span class="line"><span class="built_in">COUNT</span>(continent),</span><br><span class="line"><span class="built_in">COUNT</span>(area),</span><br><span class="line"><span class="built_in">COUNT</span>(population),</span><br><span class="line"><span class="built_in">COUNT</span>(gdp),</span><br><span class="line"><span class="built_in">COUNT</span>(NAME),</span><br><span class="line"><span class="built_in">COUNT</span>(<span class="operator">*</span>)</span><br><span class="line"><span class="keyword">FROM</span> world</span><br></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li><p>COUNT(字段)计算<strong>指定字段下的总行数</strong>，但是<strong>忽略空值</strong></p>
+</li>
+<li><p>COUNT(<em>)计算*<em>表中总行数</em></em></p>
+</li>
+<li><p>SUM、AVG等函数计算时<strong>自动忽略空值</strong></p>
+</li>
+</ul>
+<p>查询非洲总人口数：</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="built_in">SUM</span>(population) 人口总数</span><br><span class="line"><span class="keyword">FROM</span> world</span><br><span class="line"><span class="keyword">WHERE</span> continent <span class="operator">=</span> <span class="string">'Africa'</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>计算表格行数：</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="built_in">COUNT</span>(<span class="operator">*</span>) 国家数</span><br><span class="line"><span class="keyword">FROM</span> world</span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<h5 id="c-单独使用GROUP-BY"><a href="#c-单独使用GROUP-BY" class="headerlink" title="c. 单独使用GROUP BY"></a>c. 单独使用GROUP BY</h5><figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> continent</span><br><span class="line"><span class="keyword">FROM</span> world</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> continent</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>注：相当于去重</strong></p>
+<p>d. GROUP BY 和 聚合函数联用</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">continent,</span><br><span class="line"><span class="built_in">COUNT</span>(name) number_of_continent</span><br><span class="line"><span class="keyword">FROM</span> world</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> continent</span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<h3 id="1-6-HAVING—聚合后筛选"><a href="#1-6-HAVING—聚合后筛选" class="headerlink" title="1.6 HAVING—聚合后筛选"></a>1.6 HAVING—聚合后筛选</h3><blockquote>
+<p>即<strong>筛选条件</strong>为<strong>聚合值</strong></p>
+</blockquote>
+<h5 id="a-标准语法-4"><a href="#a-标准语法-4" class="headerlink" title="a. 标准语法"></a>a. 标准语法</h5><figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> 字段名</span><br><span class="line"><span class="keyword">FROM</span> 表</span><br><span class="line"><span class="keyword">WHERE</span> 表达式</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> 字段名</span><br><span class="line"><span class="keyword">HAVING</span> 表达式</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> 字段名 <span class="keyword">asc</span><span class="operator">/</span><span class="keyword">desc</span></span><br><span class="line">LIMIT (位置偏移量), 行数</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>注：</strong></p>
+<ul>
+<li>HAVING在GROUP BY 之后，ORDER BY之前</li>
+<li>HAVING只能使用<strong>聚合字段</strong>和<strong>GROUP BY后的字段（建议用WHERE）</strong></li>
+</ul>
+<p>示例：</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">continent, </span><br><span class="line"><span class="built_in">SUM</span>(population) total_population</span><br><span class="line"><span class="keyword">FROM</span> world</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> continent</span><br><span class="line"><span class="keyword">HAVING</span> total_population <span class="operator">&gt;</span> <span class="number">100000000</span></span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<h3 id="1-7-总结"><a href="#1-7-总结" class="headerlink" title="1.7 总结"></a>1.7 总结</h3><ol>
+<li>顺序 <strong>SELECT-FROM-WHERE-GROUP BY-HAVING-ORDER BY-LIMIT</strong></li>
+</ol>
+<h3 id="1-8-部分常见函数"><a href="#1-8-部分常见函数" class="headerlink" title="1.8 部分常见函数"></a>1.8 部分常见函数</h3><h5 id="a-函数详解"><a href="#a-函数详解" class="headerlink" title="a. 函数详解"></a>a. 函数详解</h5><table>
+<thead>
+<tr>
+<th align="center">函数</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">ROUND(x,y)</td>
+<td align="center"><strong>四舍五入</strong>函数（y为负数时，保留小数点左边相应位数为0）</td>
+</tr>
+<tr>
+<td align="center">CONCAT(s1,s2,…)</td>
+<td align="center"><strong>连接</strong>字符串函数</td>
+</tr>
+<tr>
+<td align="center">REPLACE(s,s1,s2)</td>
+<td align="center">使用s2<strong>替代</strong>s中的<strong>所有</strong>的s1</td>
+</tr>
+<tr>
+<td align="center">LEFT(s,n)  LEFT(s,n)  substring(s,n,len)</td>
+<td align="center"><strong>截取</strong>最左边n的字符串  最右边n个字符串  字符串s中从第n个字符起len个长度字符串（n可以为负数，即从到处第n个字符取）</td>
+</tr>
+<tr>
+<td align="center">CAST(x as type)</td>
+<td align="center"><strong>转换数据类型</strong>，type可填char(n)、date、time、datetime、decimal</td>
+</tr>
+<tr>
+<td align="center">year(date)、month(date)、day(date)</td>
+<td align="center"><strong>获取日期中的年月日</strong></td>
+</tr>
+<tr>
+<td align="center">date_add(date,interval expr type) date_sub(date,interval expr type)</td>
+<td align="center"><strong>指定时间进行加减</strong>。如date_add(‘2023-.08-08 22:10:03’,interval 1 second)返回 ‘2023-.08-08 22:10:04’</td>
+</tr>
+<tr>
+<td align="center">datediff(date1,date2)</td>
+<td align="center">计算两个日期之间<strong>间隔天数</strong></td>
+</tr>
+<tr>
+<td align="center">date_format(date,format)</td>
+<td align="center">将日期<strong>格式化</strong></td>
+</tr>
+<tr>
+<td align="center">IF(expr,v1,v2)</td>
+<td align="center"><strong>条件判断</strong></td>
+</tr>
+<tr>
+<td align="center">CASE WHEN</td>
+<td align="center"><strong>用法1：</strong>case 表达式 when v1 then r1 [when v2 then r2 …] end    /   <strong>用法2</strong>：case  when v1 then r1 [when v2 then r2 …] end</td>
+</tr>
+</tbody></table>
+<h5 id="b-例题"><a href="#b-例题" class="headerlink" title="b. 例题"></a>b. 例题</h5><figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">recovered 累计治愈人数,</span><br><span class="line"><span class="keyword">case</span> <span class="keyword">when</span> recovered <span class="operator">=</span> <span class="number">1</span> <span class="keyword">then</span> <span class="string">'one'</span> <span class="keyword">when</span> recovered <span class="operator">&gt;</span> <span class="number">1</span> <span class="keyword">then</span> <span class="string">'more'</span> <span class="keyword">else</span> <span class="string">'0'</span></span><br><span class="line"><span class="keyword">end</span>  <span class="keyword">AS</span> detail</span><br><span class="line"><span class="keyword">FROM</span> covid</span><br><span class="line"><span class="keyword">WHERE</span> recovered <span class="operator">&gt;</span> <span class="number">0</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="/pic/mysql/image-20230808152643192.png" alt="image-20230808152643192"></p>
+<ol>
+<li>👍 ROUND和CONCAT嵌套得到百分比</li>
+</ol>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">recovered ,</span><br><span class="line">confirmed,</span><br><span class="line">CONCAT(ROUND((recovered<span class="operator">/</span>confirmed)<span class="operator">*</span><span class="number">100</span>,<span class="number">2</span>),<span class="string">'%'</span>) 治愈率</span><br><span class="line"><span class="keyword">FROM</span> covid</span><br><span class="line"><span class="keyword">WHERE</span> recovered<span class="operator">/</span>confirmed <span class="operator">&gt;</span> <span class="number">0.3</span></span><br></pre></td></tr></tbody></table></figure>
+
+<ol start="2">
+<li>查询国家名与首都名首字母相同的数据，且国家名与首都名不完全相同。</li>
+</ol>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">name,</span><br><span class="line">capital</span><br><span class="line"><span class="keyword">FROM</span> world</span><br><span class="line"><span class="keyword">WHERE</span> </span><br><span class="line"><span class="keyword">left</span>(name,<span class="number">1</span>) <span class="operator">=</span> <span class="keyword">left</span>(capital,<span class="number">1</span>)</span><br><span class="line"><span class="keyword">AND</span> name <span class="operator">!=</span> capital</span><br></pre></td></tr></tbody></table></figure>
+
+<ol start="3">
+<li>🚀查询首都和国家名，其中首都需为国家名的拓展，但是家名与首都名不完全相同。</li>
+</ol>
+<p>方法一：LEFT+LENGTH</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">name,</span><br><span class="line">capital</span><br><span class="line"><span class="keyword">FROM</span> world</span><br><span class="line"><span class="keyword">WHERE</span> </span><br><span class="line"><span class="keyword">left</span>(name,length(capital)) <span class="operator">=</span> name</span><br><span class="line"><span class="keyword">AND</span> name <span class="operator">!=</span> capital</span><br></pre></td></tr></tbody></table></figure>
+
+<p>方法二👍：LIKE+CONCAT</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">name,</span><br><span class="line">capital</span><br><span class="line"><span class="keyword">FROM</span> world</span><br><span class="line"><span class="keyword">WHERE</span> capital <span class="keyword">LIKE</span> CONCAT(name,<span class="string">'%'</span>)</span><br><span class="line"><span class="keyword">AND</span> name <span class="operator">!=</span> capital</span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<h2 id="2-高级语句"><a href="#2-高级语句" class="headerlink" title="2. 高级语句"></a>2. 高级语句</h2><h3 id="2-1-窗口函数"><a href="#2-1-窗口函数" class="headerlink" title="2.1 窗口函数"></a>2.1 窗口函数</h3><h5 id="a-标准语法-5"><a href="#a-标准语法-5" class="headerlink" title="a. 标准语法"></a>a. 标准语法</h5><figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">窗口函数<span class="keyword">over</span>([patition <span class="keyword">by</span> 字段名][<span class="keyword">order</span> <span class="keyword">by</span> 字段名 <span class="keyword">asc</span><span class="operator">|</span><span class="keyword">desc</span>])</span><br></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li>partition by 指定分区；order by 指定排序依据</li>
+</ul>
+<h5 id="b-常用函数"><a href="#b-常用函数" class="headerlink" title="b. 常用函数"></a>b. 常用函数</h5><table>
+<thead>
+<tr>
+<th align="center">常用函数</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">rank()over()</td>
+<td align="center">排序窗口函数-<strong>跳跃式排序</strong>(1,1,3,4)</td>
+</tr>
+<tr>
+<td align="center">dense_rank()over()</td>
+<td align="center">排序窗口函数-<strong>并列连续排序</strong>(1,1,2,3)</td>
+</tr>
+<tr>
+<td align="center">row_rank()over()</td>
+<td align="center">排序窗口函数-<strong>连续排序</strong>(1,2,3,4)</td>
+</tr>
+<tr>
+<td align="center">lag(字段名,偏移量,[,默认值])over()</td>
+<td align="center">偏移分析函数-<strong>向上</strong>偏移</td>
+</tr>
+<tr>
+<td align="center">lead(字段名,偏移量,[,默认值])over()</td>
+<td align="center">偏移分析函数-<strong>向下</strong>偏移</td>
+</tr>
+</tbody></table>
+<p>示例：</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">name,</span><br><span class="line">date_format(whn, <span class="string">'%Y-%m-%d'</span>) <span class="type">date</span>,</span><br><span class="line">confirmed,</span><br><span class="line"><span class="built_in">lag</span>(confirmed,<span class="number">1</span>)<span class="keyword">over</span>(<span class="keyword">partition</span> <span class="keyword">by</span> name <span class="keyword">order</span> <span class="keyword">by</span> whn) 昨日累计时间确诊人数,</span><br><span class="line">(confirmed <span class="operator">-</span> <span class="built_in">lag</span>(confirmed,<span class="number">1</span>)<span class="keyword">over</span>(<span class="keyword">partition</span> <span class="keyword">by</span> name <span class="keyword">order</span> <span class="keyword">by</span> whn)) 每日新增确诊人数 </span><br><span class="line"><span class="keyword">FROM</span> covid</span><br><span class="line"><span class="keyword">WHERE</span> name <span class="keyword">IN</span> (<span class="string">'France'</span>,<span class="string">'Germany'</span>) <span class="keyword">AND</span> <span class="keyword">month</span>(whn) <span class="operator">=</span> <span class="number">1</span></span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> whn</span><br></pre></td></tr></tbody></table></figure>
+
+<p>👍查询意大利<strong>每周新增人数</strong>（只显示周一），显示国家名、标准日期、每周新增人数，按照截止日期排序</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> </span><br><span class="line">name,</span><br><span class="line">date_format(whn,<span class="string">'%Y-%m-%d'</span>) 标准日期,</span><br><span class="line">confirmed <span class="operator">-</span> <span class="built_in">lag</span>(confirmed,<span class="number">1</span>)<span class="keyword">over</span>(<span class="keyword">order</span> <span class="keyword">by</span> whn) 每周新增人数</span><br><span class="line"><span class="keyword">from</span> covid</span><br><span class="line"><span class="keyword">where</span> name <span class="operator">=</span> <span class="string">'Italy'</span> <span class="keyword">and</span> weekday(whn) <span class="operator">=</span> <span class="number">0</span></span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> whn</span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<h3 id="2-2-表连接"><a href="#2-2-表连接" class="headerlink" title="2.2 表连接"></a>2.2 表连接</h3><h4 id="2-2-1-内连接-INNER-JOIN"><a href="#2-2-1-内连接-INNER-JOIN" class="headerlink" title="2.2.1 内连接(INNER JOIN)"></a>2.2.1 内连接(INNER JOIN)</h4><figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT 字段名</span><br><span class="line">FROM 表名1 （别名1）</span><br><span class="line">(INNER) JOIN 表名2 （别名2）</span><br><span class="line">ON 表明1.字段名 = 表明2.字段名</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>注：</strong>多表连接时，字段名唯一时可以不指定表名，否则一定要指明表名</p>
+<p>示例：</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">team1,</span><br><span class="line">team2,</span><br><span class="line">player</span><br><span class="line"><span class="keyword">FROM</span> goal go</span><br><span class="line"><span class="keyword">JOIN</span> game ga</span><br><span class="line"><span class="keyword">ON</span> go.matchid <span class="operator">=</span> ga.id</span><br><span class="line"><span class="keyword">WHERE</span> player <span class="keyword">LIKE</span> <span class="string">'Mario%'</span></span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<h4 id="2-2-2-左连接-LEFT-JOIN"><a href="#2-2-2-左连接-LEFT-JOIN" class="headerlink" title="2.2.2 左连接(LEFT JOIN)"></a>2.2.2 左连接(LEFT JOIN)</h4><figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> 字段名</span><br><span class="line"><span class="keyword">FROM</span> 表名<span class="number">1</span> （别名<span class="number">1</span>）</span><br><span class="line"><span class="keyword">LEFT</span> <span class="keyword">JOIN</span> 表名<span class="number">2</span> （别名<span class="number">2</span>）</span><br><span class="line"><span class="keyword">ON</span> 表明<span class="number">1.</span>字段名 <span class="operator">=</span> 表明<span class="number">2.</span>字段名</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>显示所有LFET左边表格数据</strong></p>
+<p>示例：</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">t.name 教师名,</span><br><span class="line">d.name 科目名</span><br><span class="line"><span class="keyword">FROM</span> teacher t</span><br><span class="line"><span class="keyword">LEFT</span> <span class="keyword">JOIN</span> dept d</span><br><span class="line"><span class="keyword">ON</span> t.dept <span class="operator">=</span> d.id</span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<h4 id="2-2-3-右连接-RIGHT-JOIN"><a href="#2-2-3-右连接-RIGHT-JOIN" class="headerlink" title="2.2.3 右连接(RIGHT JOIN)"></a>2.2.3 右连接(RIGHT JOIN)</h4><figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> 字段名</span><br><span class="line"><span class="keyword">FROM</span> 表名<span class="number">1</span> （别名<span class="number">1</span>）</span><br><span class="line"><span class="keyword">RIGHT</span> <span class="keyword">JOIN</span> 表名<span class="number">2</span> （别名<span class="number">2</span>）</span><br><span class="line"><span class="keyword">ON</span> 表明<span class="number">1.</span>字段名 <span class="operator">=</span> 表明<span class="number">2.</span>字段名</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>显示所有RIGHT右边表格数据</strong></p>
+<h4 id="2-4-经典例题"><a href="#2-4-经典例题" class="headerlink" title="2.4 经典例题"></a>2.4 经典例题</h4><ol>
+<li>👍查询至少演过30次第一主角的演员名(<a target="_blank" rel="noopener" href="https://sqlzoo.net/wiki/More_JOIN_operations">More JOIN operations - SQLZOO</a>)</li>
+</ol>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">name</span><br><span class="line"><span class="keyword">FROM</span> actor a</span><br><span class="line"><span class="keyword">JOIN</span> casting c</span><br><span class="line"><span class="keyword">ON</span> a.id <span class="operator">=</span> c.actorid</span><br><span class="line"><span class="keyword">WHERE</span> ord <span class="operator">=</span> <span class="number">1</span></span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> name</span><br><span class="line"><span class="keyword">HAVING</span> <span class="built_in">COUNT</span>(movieid) <span class="operator">&gt;=</span> <span class="number">30</span></span><br></pre></td></tr></tbody></table></figure>
+
+<ol start="2">
+<li>👍查询<strong>每场比赛</strong>，<strong>每个球队</strong>的得分情况（包含mdate,team1,score1,team2,score2）</li>
+</ol>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">mdate,</span><br><span class="line">team1,</span><br><span class="line"><span class="built_in">SUM</span>(IF(team1 <span class="operator">=</span> teamid,<span class="number">1</span>,<span class="number">0</span>)) Score1,</span><br><span class="line">team2,</span><br><span class="line"><span class="built_in">SUM</span>(IF(team2 <span class="operator">=</span> teamid,<span class="number">1</span>,<span class="number">0</span>)) Score2</span><br><span class="line"><span class="keyword">FROM</span> game ga</span><br><span class="line"><span class="keyword">LEFT</span> <span class="keyword">JOIN</span> goal go</span><br><span class="line"><span class="keyword">ON</span> ga.id <span class="operator">=</span> go.matchid</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> mdate, team1, team2</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> mdate</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>用左连接，否则未进球队伍信息将不会显示</strong></p>
+<h3 id="2-3-子查询"><a href="#2-3-子查询" class="headerlink" title="2.3 子查询"></a>2.3 子查询</h3><p>子查询本身就是一段完整的查询语句，用<strong>括号包裹嵌套在主查询语句</strong>中，子查询可以<strong>多层嵌套</strong></p>
+<h4 id="2-3-1-WHERE-子查询-比较运算符-IN关键字"><a href="#2-3-1-WHERE-子查询-比较运算符-IN关键字" class="headerlink" title="2.3.1 WHERE+子查询 (比较运算符+IN关键字)"></a>2.3.1 WHERE+子查询 (比较运算符+IN关键字)</h4><figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> 字段名</span><br><span class="line"><span class="keyword">FROM</span> 表</span><br><span class="line"><span class="keyword">WHERE</span> 值 运算符 (SELETCT ？ <span class="keyword">FROM</span> 表名 )</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>运算顺序：</strong>子查询优先于主查询</p>
+<p>示例：</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">name </span><br><span class="line"><span class="keyword">FROM</span> world</span><br><span class="line"><span class="keyword">WHERE</span> </span><br><span class="line">gdp <span class="operator">&gt;</span> (</span><br><span class="line"><span class="keyword">SELECT</span> <span class="built_in">MAX</span>(gdp) <span class="keyword">FROM</span> world </span><br><span class="line"><span class="keyword">WHERE</span> continent <span class="operator">=</span> <span class="string">'Europe'</span></span><br><span class="line">) <span class="keyword">AND</span></span><br><span class="line">gdp <span class="keyword">IS</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span></span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<h4 id="2-3-2-FROM-子查询"><a href="#2-3-2-FROM-子查询" class="headerlink" title="2.3.2 FROM+子查询"></a>2.3.2 FROM+子查询</h4><figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> 字段名</span><br><span class="line"><span class="keyword">FROM</span> (SELETCT 字段 <span class="keyword">FROM</span> 表名) 新表名</span><br><span class="line"><span class="keyword">WHERE</span> 条件</span><br></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li><strong>对窗口函数得到的结果进行二次查找，必须使用子查询</strong></li>
+<li>子查询得到的表必须加<strong>别名</strong></li>
+</ul>
+<p>示例：</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">constituency,</span><br><span class="line">party</span><br><span class="line"><span class="keyword">FROM</span> (</span><br><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">constituency,</span><br><span class="line">party,</span><br><span class="line">votes,</span><br><span class="line"><span class="built_in">rank</span>()<span class="keyword">over</span>(<span class="keyword">partition</span> <span class="keyword">by</span> constituency <span class="keyword">order</span> <span class="keyword">by</span> votes <span class="keyword">desc</span>) orders </span><br><span class="line"><span class="keyword">FROM</span> ge</span><br><span class="line"><span class="keyword">WHERE</span> constituency <span class="keyword">BETWEEN</span> <span class="string">'S14000021'</span> <span class="keyword">AND</span> <span class="string">'S14000026'</span></span><br><span class="line"><span class="keyword">AND</span> yr <span class="operator">=</span> <span class="number">2017</span></span><br><span class="line">) new_ge</span><br><span class="line"><span class="keyword">WHERE</span> new_ge.orders <span class="operator">=</span> <span class="number">1</span></span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<h4 id="2-3-3-例题"><a href="#2-3-3-例题" class="headerlink" title="2.3.3 例题"></a>2.3.3 例题</h4><ol>
+<li>👍查询所有国家人口均&lt;=25000000的大洲，及其国家名和人口</li>
+</ol>
+<p>(<a target="_blank" rel="noopener" href="https://sqlzoo.net/wiki/SELECT_within_SELECT_Tutorial">https://sqlzoo.net/wiki/SELECT_within_SELECT_Tutorial</a>)</p>
+<p>方法一：正向思维</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">continent,</span><br><span class="line">name,</span><br><span class="line">population</span><br><span class="line"><span class="keyword">FROM</span> world</span><br><span class="line"><span class="keyword">WHERE</span> continent <span class="keyword">in</span></span><br><span class="line">(</span><br><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">continent</span><br><span class="line"><span class="keyword">FROM</span> world</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> continent</span><br><span class="line"><span class="keyword">HAVING</span> <span class="built_in">MAX</span>(population) <span class="operator">&lt;</span> <span class="number">25000000</span></span><br><span class="line">)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>👍方法二：逆向思维</p>
+<p>但凡哪个国家人口大于25000000，则该大洲不被选择</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">continent,</span><br><span class="line">name,</span><br><span class="line">population</span><br><span class="line"><span class="keyword">FROM</span> world</span><br><span class="line"><span class="keyword">WHERE</span> continent <span class="keyword">NOT</span> <span class="keyword">IN</span></span><br><span class="line">(</span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> </span><br><span class="line">continent</span><br><span class="line"><span class="keyword">FROM</span> world</span><br><span class="line"><span class="keyword">WHERE</span> population <span class="operator">&gt;</span> <span class="number">25000000</span></span><br><span class="line">)</span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<ol start="2">
+<li>👍选取各大洲中面积最大的国家名、大洲名（<a target="_blank" rel="noopener" href="https://sqlzoo.net/wiki/SELECT_within_SELECT_Tutorial%EF%BC%89">https://sqlzoo.net/wiki/SELECT_within_SELECT_Tutorial）</a></li>
+</ol>
+<p>方法一：窗口函数法+FROM子查询</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">continent,</span><br><span class="line">name,</span><br><span class="line">area</span><br><span class="line"><span class="keyword">FROM</span> </span><br><span class="line">(</span><br><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">continent,</span><br><span class="line">name,</span><br><span class="line">area,</span><br><span class="line"><span class="built_in">rank</span>()<span class="keyword">over</span>(<span class="keyword">partition</span> <span class="keyword">by</span> continent <span class="keyword">order</span> <span class="keyword">by</span> area <span class="keyword">desc</span>) orders</span><br><span class="line"><span class="keyword">FROM</span> world</span><br><span class="line">) <span class="keyword">new</span></span><br><span class="line"><span class="keyword">WHERE</span> new.orders <span class="operator">=</span> <span class="number">1</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>方法二：👍MAX+WHERE子查询</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">continent,</span><br><span class="line">name,</span><br><span class="line">area</span><br><span class="line"><span class="keyword">FROM</span> world</span><br><span class="line"><span class="keyword">WHERE</span> (continent,area) <span class="keyword">IN</span></span><br><span class="line">(</span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">continent,</span><br><span class="line"><span class="built_in">MAX</span>(area)</span><br><span class="line"><span class="keyword">FROM</span> world</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> continent</span><br><span class="line">)</span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<ol start="3">
+<li>查询德国和意大利每天新增治愈人数并从高到低排名，截至日期输出格式’%Y-%m-%d’，按排名排序（<a target="_blank" rel="noopener" href="https://sqlzoo.net/wiki/Window_LAG#COVID-19_Data%EF%BC%89">https://sqlzoo.net/wiki/Window_LAG#COVID-19_Data）</a></li>
+</ol>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">name,</span><br><span class="line">date_format(whn,<span class="string">'%Y-%m-%d'</span>) 截至日期,</span><br><span class="line">新增治愈人数,</span><br><span class="line"><span class="built_in">rank</span>()<span class="keyword">over</span>(<span class="keyword">partition</span> <span class="keyword">by</span> name <span class="keyword">order</span> <span class="keyword">by</span> 新增治愈人数) 排序</span><br><span class="line"><span class="keyword">FROM</span> (</span><br><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">name,</span><br><span class="line">whn,</span><br><span class="line"><span class="built_in">lag</span>(recovered,<span class="number">1</span>)<span class="keyword">over</span>(<span class="keyword">partition</span> <span class="keyword">by</span> name <span class="keyword">order</span> <span class="keyword">by</span> whn) 新增治愈人数</span><br><span class="line"><span class="keyword">FROM</span> covid</span><br><span class="line"><span class="keyword">WHERE</span> name <span class="keyword">IN</span> (<span class="string">'France'</span>,<span class="string">'Italy'</span>)</span><br><span class="line">) new_covid</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> 排序</span><br></pre></td></tr></tbody></table></figure>
+
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://example.com/2023/08/11/mysql/">http://example.com/2023/08/11/mysql/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/sql/"># sql</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2023/08/10/excel/">EXCEL数据分析常用函数</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+  
+ <div id="gitalk-container"></div>  
+ 
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+ var gitalk = new Gitalk({  
+ clientID: 'b647c2f85009b1355e1d',  
+ clientSecret: 'b034ae0bf07e04f8819c52eb0e948a378dcbf524',  
+ repo: 'Elvais.github.io',  
+ owner: 'Elvais',  
+ admin: 'Elvais',  
+ id: location.pathname,  
+ labels: 'Gitalk'.split(',').filter(l => l),  
+ perPage: 10,  
+ pagerDirection: 'last',  
+ proxy: 'https://netnr-proxy.cloudno.de/https://github.com/login/oauth/access_token',
+ createIssueManually: true,  
+ distractionFreeMode: true  
+ })  
+ gitalk.render('gitalk-container')  
+</script>  
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© WuXin | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
