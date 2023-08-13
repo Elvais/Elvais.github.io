@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="WuXin">
+
+
+
+
+
+<title>基于EXCEL的美团外卖周报制作 | Hexo</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+    <link rel="stylesheet" href="/../fonts/iconfont2/iconfont.css">
+    
+    <link rel="stylesheet" href="/../fonts/iconfont3/iconfont.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+            <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+        
+    
+
+
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Elva&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">📑Posts</a>
+                
+                    <a class="menu-item" href="/category">🗃Categories</a>
+                
+                    <a class="menu-item" href="/tag">🔖Tags</a>
+                
+                    <a class="menu-item" href="/about">💡About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Elva&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">📑Posts</a>
+                
+                    <a class="menu-item" href="/category">🗃Categories</a>
+                
+                    <a class="menu-item" href="/tag">🔖Tags</a>
+                
+                    <a class="menu-item" href="/about">💡About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">基于EXCEL的美团外卖周报制作</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">WuXin</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">August 13, 2023&nbsp;&nbsp;19:59:23</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/">项目实战</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="基于EXCEL的美团外卖周报制作"><a href="#基于EXCEL的美团外卖周报制作" class="headerlink" title="基于EXCEL的美团外卖周报制作"></a>基于EXCEL的美团外卖周报制作</h1><blockquote>
+<p>数据来源为B站-戴师兄</p>
+</blockquote>
+<h2 id="1-熟悉数据"><a href="#1-熟悉数据" class="headerlink" title="1. 熟悉数据"></a>1. 熟悉数据</h2><p><img src="/pic/weekdaily/image-20230810205728254.png"></p>
+<h2 id="2-周报框架搭建"><a href="#2-周报框架搭建" class="headerlink" title="2. 周报框架搭建"></a>2. 周报框架搭建</h2><h3 id="2-1-周报结构"><a href="#2-1-周报结构" class="headerlink" title="2.1 周报结构"></a>2.1 周报结构</h3><p>先搭建基础结果</p>
+<ul>
+<li>标题：包含是<strong>确切时期</strong></li>
+<li>小看板：一些<strong>最重要</strong>的、最需要<strong>直观展现</strong>的指标</li>
+<li>结果指标：反应<strong>产品和运营最终目的</strong>的指标，包括<strong>GMV、商家实收、到手率、有效订单、客单价</strong>等</li>
+<li>过程指标：影响结果的<strong>中间指标</strong></li>
+</ul>
+<p>步骤：</p>
+<ol>
+<li>填写数据时间和标题</li>
+<li>确定看板指标、结果指标和过程指标</li>
+<li>填写具体日期（只用填写一个单元后，之后采用<strong>下拉</strong>和<strong>引用</strong>的方式，以便周报制作<strong>重复利用</strong>）</li>
+</ol>
+<p><img src="/pic/weekdaily/image-20230810222929174.png" alt="image-20230810222929174"></p>
+<ul>
+<li>数据验证功能实现筛选器</li>
+</ul>
+<p><img src="/pic/weekdaily/image-20230811203054002.png" alt="image-20230811203054002"></p>
+<h3 id="2-2-函数填充"><a href="#2-2-函数填充" class="headerlink" title="2.2 函数填充"></a>2.2 函数填充</h3><p>为了使周报实现筛选器的功能，每个函数都需要右IF嵌套，分别讨论为平台为<strong>全部、美团、饿了么</strong>的情形。</p>
+<h4 id="2-2-1-简单函数填充"><a href="#2-2-1-简单函数填充" class="headerlink" title="2.2.1 简单函数填充"></a>2.2.1 简单函数填充</h4><p><strong>GMV、商家实收、有效订单、无效订单、曝光人数、进店人数、下单人数</strong>等可以直接利用<strong>IF嵌套SUMIFS函数</strong>实现</p>
+<p><strong>注：</strong>注意<strong>区分是否锁定行列</strong>，以实现<strong>拖动填充</strong>效果</p>
+<ol>
+<li>以填写GMV为例：</li>
+</ol>
+<figure class="highlight excel"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">=<span class="built_in">IF</span>($H$<span class="number">5</span>=<span class="string">"全部"</span>,<span class="built_in">SUMIF</span>(<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>(!$A$<span class="number">12</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),!$<span class="symbol">A13</span>,<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>(!C$<span class="number">12</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>))),<span class="built_in">SUMIFS</span>(<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>(!C$<span class="number">12</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>(!$A$<span class="number">12</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),!$<span class="symbol">A13</span>,<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>(<span class="string">"平台i"</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),!$H$<span class="number">5</span>))</span><br></pre></td></tr></tbody></table></figure>
+
+<ol start="2">
+<li>之后同时<strong>向下和向右填充</strong>，删除到手率一列的数据</li>
+</ol>
+<p><img src="/pic/weekdaily/image-20230811205611836.png" alt="image-20230811205611836"></p>
+<ol start="3">
+<li>过程指标部分同理，至此，可以从原表中直接找到的数据就全部填充完毕</li>
+</ol>
+<p><img src="/pic/weekdaily/image-20230811205848177.png" alt="image-20230811205848177"></p>
+<ol start="4">
+<li>计算一些利用<strong>当前数值</strong>能计算的<strong>简单指标</strong></li>
+</ol>
+<ul>
+<li><strong>到手率</strong> = 商家实收 / GMV</li>
+<li><strong>进店转化率</strong> = 进店人数 / 曝光人数</li>
+<li><strong>下单转化率</strong> = 下单人数 / 进店人数</li>
+<li><strong>客单价</strong>  = GMV / 有效订单</li>
+</ul>
+<h4 id="2-2-2-复杂函数填充"><a href="#2-2-2-复杂函数填充" class="headerlink" title="2.2.2 复杂函数填充"></a>2.2.2 复杂函数填充</h4><h5 id="1-营销占比"><a href="#1-营销占比" class="headerlink" title="1. 营销占比"></a>1. 营销占比</h5><ul>
+<li><strong>营销占比</strong> = cpc总费用 / GMV</li>
+</ul>
+<figure class="highlight excel"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">=<span class="built_in">IF</span>($H$<span class="number">5</span>=<span class="string">"全部"</span>,<span class="built_in">SUMIF</span>(<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>($A$<span class="number">12</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),$<span class="symbol">A13</span>,<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>(<span class="string">"cpc总费用"</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>))),<span class="built_in">SUMIFS</span>(<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>(<span class="string">"cpc总费用"</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>($A$<span class="number">12</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),$<span class="symbol">A13</span>,<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>(<span class="string">"平台i"</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),$H$<span class="number">5</span>))/<span class="symbol">C13</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>下拉填充所有：</p>
+<p><img src="/pic/weekdaily/image-20230811213953884.png" alt="image-20230811213953884"></p>
+<h5 id="2-“总计”项"><a href="#2-“总计”项" class="headerlink" title="2. “总计”项"></a>2. “总计”项</h5><p>总计项的计算分为两部分：</p>
+<ul>
+<li>可以<strong>直接将一周值相加</strong>的：GMV、商家实收、有效订单、无效订单、曝光人数、进店人数、下单人数</li>
+<li><strong>不能直接相加</strong>的一些比值：包括到手率、客单价、进店转化率、下单转化率、营收占比，应当用<strong>a项总值/b项总值</strong></li>
+</ul>
+<p>先计算直接将一周值相加的，用SUM函数填充</p>
+<p><img src="/pic/weekdaily/image-20230811215441344.png" alt="image-20230811215441344"></p>
+<p>再计算不能直接相加的</p>
+<p>a. 到手率、客单价、进店转化率、下单转化率仍然按照计算单项时的公式计算</p>
+<p>b. 营销占比</p>
+<p>由于营销占比计算公式中的cpc总费用并不在表格中，所以需要计算这一周内的总cpc费用</p>
+<figure class="highlight excel"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">=<span class="built_in">IF</span>($H$<span class="number">5</span>=<span class="string">"全部"</span>,<span class="built_in">SUMIFS</span>(<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>(<span class="string">"cpc总费用"</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>($A$<span class="number">12</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),<span class="string">"&gt;="</span>&amp;$<span class="symbol">A13</span>,<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>($A$<span class="number">12</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),<span class="string">"&lt;="</span>&amp;$<span class="symbol">A19</span>),<span class="built_in">SUMIFS</span>(<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>(<span class="string">"cpc总费用"</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>($A$<span class="number">12</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),<span class="string">"&gt;="</span>&amp;$<span class="symbol">A13</span>,<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>($A$<span class="number">12</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),<span class="string">"&lt;="</span>&amp;$<span class="symbol">A19</span>,<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>(<span class="string">"平台i"</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),$H$<span class="number">5</span>))/<span class="symbol">C20</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="/pic/weekdaily/image-20230811220509107.png" alt="image-20230811220509107"></p>
+<p><strong>到此，结果指标和过程指标填充部分就完成啦</strong></p>
+<h4 id="2-2-3-小看板指标"><a href="#2-2-3-小看板指标" class="headerlink" title="2.2.3. 小看板指标"></a>2.2.3. 小看板指标</h4><ol>
+<li><strong>周累计</strong>指标直接引用过程指标中的结果</li>
+</ol>
+<p><img src="/pic/weekdaily/image-20230812203553391.png" alt="image-20230812203553391"></p>
+<ol start="2">
+<li>周环比指标：</li>
+</ol>
+<p>周环比 = (上一周指标值 - 这一周指标值) / 这一周指标值 = 上一周指标值 / 这一周指标值 -1</p>
+<ul>
+<li>有效订单周环比为例</li>
+</ul>
+<figure class="highlight excel"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">=<span class="symbol">F20</span>/<span class="built_in">IF</span>($H$<span class="number">5</span>=<span class="string">"全部"</span>,<span class="built_in">SUMIFS</span>(<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>(<span class="string">"有效订单"</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>($A$<span class="number">12</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),<span class="string">"&gt;="</span>&amp;($<span class="symbol">A13</span>-<span class="number">7</span>),<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>($A$<span class="number">12</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),<span class="string">"&lt;="</span>&amp;($<span class="symbol">A19</span>-<span class="number">7</span>)),<span class="built_in">SUMIFS</span>(<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>(<span class="string">"有效订单"</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>($A$<span class="number">12</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),<span class="string">"&gt;="</span>&amp;($<span class="symbol">A13</span>-<span class="number">7</span>),<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>($A$<span class="number">12</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),<span class="string">"&lt;="</span>&amp;($<span class="symbol">A19</span>-<span class="number">7</span>),<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>(<span class="string">"平台i"</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),$H$<span class="number">5</span>))-<span class="number">1</span></span><br></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li>商家实收类似</li>
+<li>到手率：到手率比较复杂，因为上一周的到手率，需要通过 上一周的商家实收/上一周的GMV求得，因此最后的公式为：</li>
+</ul>
+<figure class="highlight excel"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">=<span class="symbol">E20</span>/(<span class="built_in">IF</span>($H$<span class="number">5</span>=<span class="string">"全部"</span>,<span class="built_in">SUMIFS</span>(<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>(<span class="string">"商家实收"</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>($A$<span class="number">12</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),<span class="string">"&gt;="</span>&amp;($<span class="symbol">A13</span>-<span class="number">7</span>),<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>($A$<span class="number">12</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),<span class="string">"&lt;="</span>&amp;($<span class="symbol">A19</span>-<span class="number">7</span>)),<span class="built_in">SUMIFS</span>(<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>(<span class="string">"商家实收"</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>($A$<span class="number">12</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),<span class="string">"&gt;="</span>&amp;('大厂周报-练习版'!$<span class="symbol">A13</span>-<span class="number">7</span>),<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>($A$<span class="number">12</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),<span class="string">"&lt;="</span>&amp;($<span class="symbol">A19</span>-<span class="number">7</span>),<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>(<span class="string">"平台i"</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),$H$<span class="number">5</span>))/<span class="built_in">IF</span>($H$<span class="number">5</span>=<span class="string">"全部"</span>,<span class="built_in">SUMIFS</span>(<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>(<span class="string">"GMV"</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>($A$<span class="number">12</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),<span class="string">"&gt;="</span>&amp;($<span class="symbol">A13</span>-<span class="number">7</span>),<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>($A$<span class="number">12</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),<span class="string">"&lt;="</span>&amp;($<span class="symbol">A19</span>-<span class="number">7</span>)),<span class="built_in">SUMIFS</span>(<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>(<span class="string">"GMV"</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>($A$<span class="number">12</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),<span class="string">"&gt;="</span>&amp;($<span class="symbol">A13</span>-<span class="number">7</span>),<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>($A$<span class="number">12</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),<span class="string">"&lt;="</span>&amp;($<span class="symbol">A19</span>-<span class="number">7</span>),<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>(<span class="string">"平台i"</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),$H$<span class="number">5</span>)))-<span class="number">1</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="/pic/weekdaily/image-20230812210642758.png" alt="image-20230812210642758"></p>
+<ol start="3">
+<li>目标的设定和业务进度</li>
+</ol>
+<p>每个企业的业务一般都有<strong>月目标</strong>，并且每周统计业务进度，这里假定美团、饿了么的GMV目标分别为15000和5000：</p>
+<figure class="highlight excel"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">=<span class="built_in">IF</span>(<span class="symbol">H5</span>=<span class="string">"全部"</span>,<span class="number">200000</span>,<span class="built_in">IF</span>(<span class="symbol">H5</span>=<span class="string">"美团"</span>,<span class="number">150000</span>,<span class="number">50000</span>))</span><br></pre></td></tr></tbody></table></figure>
+
+<p>接下来计算业务进度，也就是计算<strong>从这个月初到目前这周结束的所有GMV</strong>与<strong>目标GMV</strong>的比值：</p>
+<figure class="highlight excel"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">=<span class="built_in">IF</span>($H$<span class="number">5</span>=<span class="string">"全部"</span>,<span class="built_in">SUMIFS</span>(<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>(<span class="string">"GMV"</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>($A$<span class="number">12</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),<span class="string">"&gt;="</span>&amp;<span class="built_in">DATE</span>(<span class="built_in">YEAR</span>($A$<span class="number">13</span>),<span class="built_in">MONTH</span>($A$<span class="number">13</span>),<span class="number">1</span>),<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>($A$<span class="number">12</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),<span class="string">"&lt;="</span>&amp;$A$<span class="number">19</span>),<span class="built_in">SUMIFS</span>(<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>(<span class="string">"GMV"</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>($A$<span class="number">12</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),<span class="string">"&gt;="</span>&amp;<span class="built_in">DATE</span>(<span class="built_in">YEAR</span>($A$<span class="number">13</span>),<span class="built_in">MONTH</span>($A$<span class="number">13</span>),<span class="number">1</span>),<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>($A$<span class="number">12</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),<span class="string">"&lt;="</span>&amp;$A$<span class="number">19</span>,<span class="built_in">INDEX</span>('拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">A:</span>$X,<span class="number">0</span>,<span class="built_in">MATCH</span>(<span class="string">"平台i"</span>,'拌客源数据<span class="number">1</span>-<span class="number">8</span>月'!$<span class="symbol">1:</span>$<span class="number">1</span>,<span class="number">0</span>)),$H$<span class="number">5</span>))/<span class="symbol">H8</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="/pic/weekdaily/image-20230812210613406.png" alt="image-20230812210613406"></p>
+<p><strong>到此，表格填充完毕，接下来就是数据格式和周报的设计啦</strong></p>
+<h2 id="3-格式优化"><a href="#3-格式优化" class="headerlink" title="3. 格式优化"></a>3. 格式优化</h2><h3 id="3-1-数字格式调整"><a href="#3-1-数字格式调整" class="headerlink" title="3.1 数字格式调整"></a>3.1 数字格式调整</h3><blockquote>
+<p>自己DIY，最重要的是一定要记得这份周报是给谁看的，在这个基础上进行美化</p>
+</blockquote>
+<ol>
+<li>将所有的数字形式调整为不保留小数点，并且比值设置为百分比格式</li>
+</ol>
+<p><img src="/pic/weekdaily/image-20230812212209847.png" alt="image-20230812212209847"></p>
+<ol start="2">
+<li>迷你图</li>
+</ol>
+<p>对小看板数据插入迷你图</p>
+<p><img src="/pic/weekdaily/image-20230812212337575.png" alt="image-20230812212337575"></p>
+<ol start="2">
+<li>小看板内容突出</li>
+</ol>
+<ul>
+<li>加粗</li>
+<li>为周环比添加条件格式，周环比大于零为绿色，否则为红色，并且添加图标，更直观地表明增长与减少</li>
+</ul>
+<p><img src="/pic/weekdaily/image-20230812213606767.png" alt="image-20230812213606767"></p>
+<ul>
+<li>筛选器边框和数据条</li>
+</ul>
+<p><img src="/pic/weekdaily/image-20230812213833349.png" alt="image-20230812213833349"></p>
+<ol start="3">
+<li>结果指标和过程指标部分</li>
+</ol>
+<ul>
+<li>表格线和加粗</li>
+</ul>
+<p><img src="/pic/weekdaily/image-20230812214102952.png" alt="image-20230812214102952"></p>
+<ul>
+<li>为本周GMV<strong>未达到GMV平均值的日期</strong>所在一行的数据设置条件格式</li>
+</ul>
+<figure class="highlight excel"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">= $<span class="symbol">C13</span> &lt; <span class="built_in">AVERAGE</span>($C$<span class="symbol">13:</span>$C$<span class="number">19</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>结果如下：</p>
+<p><img src="/pic/weekdaily/image-20230812220321525.png" alt="image-20230812220321525"></p>
+<ol start="4">
+<li>整体配色调整（顺便微调了以下迷你图位置）</li>
+</ol>
+<p><img src="/pic/weekdaily/image-20230812220347220.png" alt="image-20230812220347220"></p>
+<ol start="5">
+<li>取消网格边线勾选，检查小细节，到此一份周报就完成啦！！！</li>
+</ol>
+<p><img src="/pic/weekdaily/image-20230812220525912.png" alt="image-20230812220525912"></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://example.com/2023/08/13/weekdaily/">http://example.com/2023/08/13/weekdaily/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Excel/"># Excel</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2023/08/11/mysql/">Mysql学习笔记-基础语法和高级用法</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+  
+ <div id="gitalk-container"></div>  
+ 
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+ var gitalk = new Gitalk({  
+ clientID: 'b647c2f85009b1355e1d',  
+ clientSecret: 'b034ae0bf07e04f8819c52eb0e948a378dcbf524',  
+ repo: 'Elvais.github.io',  
+ owner: 'Elvais',  
+ admin: 'Elvais',  
+ id: location.pathname,  
+ labels: 'Gitalk'.split(',').filter(l => l),  
+ perPage: 10,  
+ pagerDirection: 'last',  
+ proxy: 'https://netnr-proxy.cloudno.de/https://github.com/login/oauth/access_token',
+ createIssueManually: true,  
+ distractionFreeMode: true  
+ })  
+ gitalk.render('gitalk-container')  
+</script>  
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© WuXin | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
