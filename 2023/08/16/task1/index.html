@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="WuXin">
+
+
+
+
+
+<title>AI夏令营第三期 - 用户新增预测挑战赛教程——任务1 | Hexo</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+    <link rel="stylesheet" href="/../fonts/iconfont2/iconfont.css">
+    
+    <link rel="stylesheet" href="/../fonts/iconfont3/iconfont.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Elva&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">📑Posts</a>
+                
+                    <a class="menu-item" href="/category">🗃Categories</a>
+                
+                    <a class="menu-item" href="/tag">🔖Tags</a>
+                
+                    <a class="menu-item" href="/about">💡About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Elva&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">📑Posts</a>
+                
+                    <a class="menu-item" href="/category">🗃Categories</a>
+                
+                    <a class="menu-item" href="/tag">🔖Tags</a>
+                
+                    <a class="menu-item" href="/about">💡About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">AI夏令营第三期 - 用户新增预测挑战赛教程——任务1</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">WuXin</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">August 16, 2023&nbsp;&nbsp;21:32:10</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <blockquote>
+<p>赛题信息+跑通任务基线Baseline</p>
+</blockquote>
+<h2 id="一、-赛题信息"><a href="#一、-赛题信息" class="headerlink" title="一、 赛题信息"></a>一、 赛题信息</h2><p>赛题数据包含62万条训练集和20万条测试集。数据集中包含13个字段，</p>
+<table>
+<thead>
+<tr>
+<th align="center">字段名称</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">uuid</td>
+<td align="center">样本唯一标识</td>
+</tr>
+<tr>
+<td align="center">eid</td>
+<td align="center">访问行为ID</td>
+</tr>
+<tr>
+<td align="center">udmap</td>
+<td align="center">9个不同的行为属性，如项目名、项目id等相关字段</td>
+</tr>
+<tr>
+<td align="center">common_ts</td>
+<td align="center">应用访问记录发生时间（毫秒时间戳）</td>
+</tr>
+<tr>
+<td align="center">x1至x8</td>
+<td align="center">用户相关的属性，为匿名处理字段</td>
+</tr>
+<tr>
+<td align="center">target</td>
+<td align="center">预测目标，即是否为新增用户</td>
+</tr>
+</tbody></table>
+<p>简单来说，即通过用户属性和行为属性判断用户为新增用户。</p>
+<h2 id="二、必要函数解析"><a href="#二、必要函数解析" class="headerlink" title="二、必要函数解析"></a>二、必要函数解析</h2><h3 id="2-1-数据集信息查看"><a href="#2-1-数据集信息查看" class="headerlink" title="2.1 数据集信息查看"></a>2.1 数据集信息查看</h3><ol>
+<li>dataframe.head()：此函数根据位置返回对象的前n行，默认n=5</li>
+</ol>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DataFrame.head(self, n=<span class="number">5</span>)  </span><br></pre></td></tr></tbody></table></figure>
+
+<ol start="2">
+<li>dataframe.tail()：此函数根据位置返回对象的后n行，默认n=5</li>
+</ol>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DataFrame.tail(self, n=<span class="number">5</span>)  </span><br></pre></td></tr></tbody></table></figure>
+
+<ol start="3">
+<li>dataframe.sample()：此函数随机返回数据框中n行，默认n=5</li>
+</ol>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DataFrame.sample(self, n=<span class="number">5</span>) &nbsp;</span><br></pre></td></tr></tbody></table></figure>
+
+<ol start="4">
+<li>dataframe.info()：用于打印<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=DataFrame&amp;spm=1001.2101.3001.7020">DataFrame</a>的简要摘要，显示有关DataFrame的信息，包括索引的数据类型dtype和列的数据类型dtype，非空值的数量和内存使用情况。</li>
+</ol>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DataFrame.info (self, verbose=<span class="literal">None</span>, buf=<span class="literal">None</span>, max_cols=<span class="literal">None</span>, memory_usage=<span class="literal">None</span>, null_counts=<span class="literal">None</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="2-2-pandas-numpy"><a href="#2-2-pandas-numpy" class="headerlink" title="2.2 pandas &amp; numpy"></a>2.2 pandas &amp; numpy</h3><ol>
+<li>np.vstack() 和 np.hstack()</li>
+</ol>
+<ul>
+<li>np.vstack() ：按垂直方向（行顺序）堆叠数组构成一个新的数组，堆叠的数组需要具有相同的维度</li>
+<li>np.hstack()：按水平方向（列顺序）堆叠数组构成一个新的数组，堆叠的数组需要具有相同的维</li>
+</ul>
+<ol start="2">
+<li>pd.concat()</li>
+</ol>
+<ul>
+<li>默认为纵向拼接</li>
+<li>输入参数axis=1，则为横向拼接</li>
+</ul>
+<ol start="3">
+<li>pd.to_datetime()：将给定的数据按照指定格式转换成日期格式</li>
+</ol>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pandas.to_datetime（arg，errors =<span class="string">'raise'</span>，utc = <span class="literal">None</span>，<span class="built_in">format</span> = <span class="literal">None</span>，unit = <span class="literal">None</span> ）</span><br></pre></td></tr></tbody></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>format</td>
+<td>格式化显示时间的格式。</td>
+</tr>
+<tr>
+<td>unit</td>
+<td>默认值为‘ns’，则将会精确到微秒，‘s’为秒。</td>
+</tr>
+</tbody></table>
+<h3 id="2-3-series-dataframe相关函数"><a href="#2-3-series-dataframe相关函数" class="headerlink" title="2.3 series &amp; dataframe相关函数"></a>2.3 series &amp; dataframe相关函数</h3><ol>
+<li><p>astype(type)：将数据转换格式</p>
+</li>
+<li><p>value_counts()：常用于<strong>数据表的计数及排序</strong>，它可以用来查看数据表中，<strong>指定列里有多少个不同的数据值，并计算每个不同值有在该列中的个数</strong>，同时还能根据需要进行排序。</p>
+</li>
+</ol>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">value_counts(values,sort=<span class="literal">True</span>, ascending=<span class="literal">False</span>, normalize=<span class="literal">False</span>,bins=<span class="literal">None</span>,dropna=<span class="literal">True</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<ol start="3">
+<li>groupby()</li>
+</ol>
+<ul>
+<li>通过对<code>DataFrame</code>对象调用<code>groupby()</code>函数返回的结果是一个<code>DataFrameGroupBy</code>对象，而不是一个<code>DataFrame</code>或者<code>Series</code>对象</li>
+<li>groupby的过程就是将原有的DataFrame按照groupby的字段，划分为若干个分组DataFrame</li>
+<li>之后常跟聚合函数如mean、max实现分组统计</li>
+</ul>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">DataFrame.groupby(by=<span class="literal">None</span>, </span><br><span class="line">				axis=<span class="number">0</span>, </span><br><span class="line">				level=<span class="literal">None</span>, </span><br><span class="line">				as_index=<span class="literal">True</span>, </span><br><span class="line">				sort=<span class="literal">True</span>, </span><br><span class="line">				group_keys=<span class="literal">True</span>, </span><br><span class="line">				squeeze=NoDefault.no_default, </span><br><span class="line">				observed=<span class="literal">False</span>, </span><br><span class="line">				dropna=<span class="literal">True</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li>by：用于确定 groupby 的组。 如果 by 是一个函数，它会在对象索引的每个值上调用。 如果传递了 dict 或 Series，则 Series 或 dict VALUES 将用于确定组（Series 的值首先对齐；参见 .align() 方法）。 如果传递了长度等于所选轴的列表或 ndarray，则按原样使用这些值来确定组。 一个标签或标签列表可以通过 self 中的列传递给 group。 请注意，元组被解释为（单个）键。</li>
+<li>axis：沿行 (0) 或列 (1) 拆分。<br>level：如果轴是MultiIndex(层次化)，则按一个或多个特定级别进行分组。</li>
+<li>as_index：对于聚合输出，返回具有组标签作为索引的对象。仅与DataFrame输入相关。as index=False是有效的sql风格的分组输出。</li>
+<li>sort：对组键进行排序。 关闭此功能可获得更好的性能。 请注意，这不会影响每组内的观察顺序。 Groupby 保留每个组内的行顺序。</li>
+<li>group_keys：当调用apply时，将组键添加到index以识别片段。</li>
+<li>squeeze：如果可能，降低返回类型的维数，否则返回一致的类型。</li>
+<li>observed：这仅适用于任何 groupers 是分类的。 如果为真：仅显示分类分组的观察值。 如果为 False：显示分类分组的所有值。</li>
+<li>dropna：如果为 True，并且组键包含 NA 值，则 NA 值连同行/列将被删除。 如果为 False，NA 值也将被视为组中的键。</li>
+</ul>
+<ol start="4">
+<li>apply()：是用来调用一个函数，让此函数对数据对象进行批量处理</li>
+</ol>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DataFrame.apply(self, func, axis=<span class="number">0</span>, raw=<span class="literal">False</span>, result_type=<span class="literal">None</span>, args=(), **kwargs)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>常用参数：</p>
+<ul>
+<li><p>func：函数或 lambda 表达式,应用于每行或者每列</p>
+</li>
+<li><p>axis：{0 or ‘index’, 1 or ‘columns’}, 默认为0</p>
+</li>
+<li><p>raw：bool 类型，默认为 False，表示把每一行或列作为 Series 传入函数中；True表示接受的是 ndarray 数据类型；</p>
+</li>
+</ul>
+<ol start="5">
+<li>map()</li>
+</ol>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Series.<span class="built_in">map</span>(arg, na_action=<span class="literal">None</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li>arg：支持 function, collections.abc.Mapping subclass or Series，做映射替换</li>
+<li>na_action：{None, ‘ignore’}, 默认 None，如果是“ignore”，则广播 NaN 值，而不将其传递给映射对应。</li>
+</ul>
+<h2 id="三、读透baseline"><a href="#三、读透baseline" class="headerlink" title="三、读透baseline"></a>三、读透baseline</h2><h3 id="3-1-导入数据集"><a href="#3-1-导入数据集" class="headerlink" title="3.1 导入数据集"></a>3.1 导入数据集</h3><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">train_data = pd.read_csv(<span class="string">'用户新增预测挑战赛公开数据/train.csv'</span>)</span><br><span class="line">test_data = pd.read_csv(<span class="string">'用户新增预测挑战赛公开数据/test.csv'</span>)</span><br><span class="line">train_data.head() <span class="comment"># 观察数据类型</span></span><br><span class="line">train_data.info() <span class="comment"># 查看数据详细信息</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="/pic/task1/image-20230815161110071.png" alt="image-20230815161110071"></p>
+<p><img src="/pic/task1/image-20230816202559499.png" alt="image-20230816202559499"></p>
+<h3 id="3-2-数据预处理"><a href="#3-2-数据预处理" class="headerlink" title="3.2 数据预处理"></a>3.2 数据预处理</h3><ol>
+<li>将时间戳转化为ms</li>
+</ol>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">train_data[<span class="string">'common_ts'</span>] = pd.to_datetime(train_data[<span class="string">'common_ts'</span>], unit=<span class="string">'ms'</span>)</span><br><span class="line">test_data[<span class="string">'common_ts'</span>] = pd.to_datetime(test_data[<span class="string">'common_ts'</span>], unit=<span class="string">'ms'</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<ol start="2">
+<li>定义函数将udmap中的key1-9拆成9个指标</li>
+</ol>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">udmap_onethot</span>(<span class="params">d</span>):</span><br><span class="line">    v = np.zeros(<span class="number">9</span>)</span><br><span class="line">    <span class="keyword">if</span> d == <span class="string">'unknown'</span>:</span><br><span class="line">        <span class="keyword">return</span> v</span><br><span class="line">    </span><br><span class="line">    d = <span class="built_in">eval</span>(d)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">10</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="string">'key'</span> + <span class="built_in">str</span>(i) <span class="keyword">in</span> d:</span><br><span class="line">            v[i-<span class="number">1</span>] = d[<span class="string">'key'</span> + <span class="built_in">str</span>(i)]</span><br><span class="line">            </span><br><span class="line">    <span class="keyword">return</span> v</span><br><span class="line"></span><br><span class="line">train_udmap_df = pd.DataFrame(np.vstack(train_data[<span class="string">'udmap'</span>].apply(udmap_onethot)))</span><br><span class="line">test_udmap_df = pd.DataFrame(np.vstack(test_data[<span class="string">'udmap'</span>].apply(udmap_onethot)))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 更新key属性表行名</span></span><br><span class="line">train_udmap_df.columns = [<span class="string">'key'</span> + <span class="built_in">str</span>(i) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">10</span>)]</span><br><span class="line">test_udmap_df.columns = [<span class="string">'key'</span> + <span class="built_in">str</span>(i) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">10</span>)]</span><br></pre></td></tr></tbody></table></figure>
+
+<ol start="3">
+<li>将key属性与原表格连接</li>
+</ol>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">train_data = pd.concat([train_data, train_udmap_df], axis=<span class="number">1</span>)</span><br><span class="line">test_data = pd.concat([test_data, test_udmap_df], axis=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 观察此时的数据</span></span><br><span class="line">train_data.head()</span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="/pic/task1/image-20230815162156176.png" alt="image-20230815162156176"></p>
+<ol start="4">
+<li>挖掘新指标</li>
+</ol>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 统计各访问行为总频数和该访问行为下用户target平均值</span></span><br><span class="line">train_data[<span class="string">'eid_freq'</span>] = train_data[<span class="string">'eid'</span>].<span class="built_in">map</span>(train_data[<span class="string">'eid'</span>].value_counts())</span><br><span class="line">test_data[<span class="string">'eid_freq'</span>] = test_data[<span class="string">'eid'</span>].<span class="built_in">map</span>(train_data[<span class="string">'eid'</span>].value_counts())</span><br><span class="line"></span><br><span class="line">train_data[<span class="string">'eid_mean'</span>] = train_data[<span class="string">'eid'</span>].<span class="built_in">map</span>(train_data.groupby(<span class="string">'eid'</span>)[<span class="string">'target'</span>].mean())</span><br><span class="line">test_data[<span class="string">'eid_mean'</span>] = test_data[<span class="string">'eid'</span>].<span class="built_in">map</span>(train_data.groupby(<span class="string">'eid'</span>)[<span class="string">'target'</span>].mean())</span><br></pre></td></tr></tbody></table></figure>
+
+<ol start="5">
+<li>将udmap中是否为“unknown”作为一个字段</li>
+</ol>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">train_data[<span class="string">'udmap_isunknown'</span>] = (train_data[<span class="string">'udmap'</span>] == <span class="string">'unknown'</span>).astype(<span class="built_in">int</span>)</span><br><span class="line">test_data[<span class="string">'udmap_isunknown'</span>] = (test_data[<span class="string">'udmap'</span>] == <span class="string">'unknown'</span>).astype(<span class="built_in">int</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<ol start="6">
+<li>将毫秒转化为小时</li>
+</ol>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将毫秒转化为小时</span></span><br><span class="line">train_data[<span class="string">'common_ts_hour'</span>] = train_data[<span class="string">'common_ts'</span>].dt.hour</span><br><span class="line">test_data[<span class="string">'common_ts_hour'</span>] = test_data[<span class="string">'common_ts'</span>].dt.hour</span><br></pre></td></tr></tbody></table></figure>
+
+<p>新添加的特征如下：</p>
+<p><img src="/pic/task1/image-20230815162602784.png" alt="image-20230815162602784"></p>
+<h3 id="3-3-利用决策树进行二分类"><a href="#3-3-利用决策树进行二分类" class="headerlink" title="3.3 利用决策树进行二分类"></a>3.3 利用决策树进行二分类</h3><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> lightgbm <span class="keyword">as</span> lgb</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LogisticRegression</span><br><span class="line"><span class="keyword">from</span> sklearn.tree <span class="keyword">import</span> DecisionTreeClassifier</span><br><span class="line"></span><br><span class="line">clf = DecisionTreeClassifier()</span><br><span class="line">clf.fit(</span><br><span class="line">    train_data.drop([<span class="string">'udmap'</span>, <span class="string">'common_ts'</span>, <span class="string">'uuid'</span>, <span class="string">'target'</span>], axis=<span class="number">1</span>),</span><br><span class="line">    train_data[<span class="string">'target'</span>]</span><br><span class="line">)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>结果：</p>
+<p><img src="/pic/task1/image-20230816213126318.png" alt="image-20230816213126318"></p>
+<p>参考链接：</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_45186086/article/details/125237895">https://blog.csdn.net/qq_45186086/article/details/125237895</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44852067/article/details/122364306">https://blog.csdn.net/weixin_44852067/article/details/122364306</a></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://example.com/2023/08/16/task1/">http://example.com/2023/08/16/task1/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Python/"># Python</a>
+                    
+                        <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"># 机器学习</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2023/08/13/weekdaily/">基于EXCEL的美团外卖周报制作</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+  
+ <div id="gitalk-container"></div>  
+ 
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+ var gitalk = new Gitalk({  
+ clientID: 'b647c2f85009b1355e1d',  
+ clientSecret: 'b034ae0bf07e04f8819c52eb0e948a378dcbf524',  
+ repo: 'Elvais.github.io',  
+ owner: 'Elvais',  
+ admin: 'Elvais',  
+ id: location.pathname,  
+ labels: 'Gitalk'.split(',').filter(l => l),  
+ perPage: 10,  
+ pagerDirection: 'last',  
+ proxy: 'https://netnr-proxy.cloudno.de/https://github.com/login/oauth/access_token',
+ createIssueManually: true,  
+ distractionFreeMode: true  
+ })  
+ gitalk.render('gitalk-container')  
+</script>  
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© WuXin | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
