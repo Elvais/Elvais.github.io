@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="WuXin">
+
+
+
+
+
+<title>AI夏令营第三期 - 用户新增预测挑战赛教程——任务3 | Hexo</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+    <link rel="stylesheet" href="/../fonts/iconfont2/iconfont.css">
+    
+    <link rel="stylesheet" href="/../fonts/iconfont3/iconfont.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Elva&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">📑Posts</a>
+                
+                    <a class="menu-item" href="/category">🗃Categories</a>
+                
+                    <a class="menu-item" href="/tag">🔖Tags</a>
+                
+                    <a class="menu-item" href="/about">💡About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Elva&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">📑Posts</a>
+                
+                    <a class="menu-item" href="/category">🗃Categories</a>
+                
+                    <a class="menu-item" href="/tag">🔖Tags</a>
+                
+                    <a class="menu-item" href="/about">💡About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">AI夏令营第三期 - 用户新增预测挑战赛教程——任务3</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">WuXin</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">August 25, 2023&nbsp;&nbsp;19:58:19</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/">项目实战</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="AI夏令营第三期-用户新增预测挑战赛教程——任务3"><a href="#AI夏令营第三期-用户新增预测挑战赛教程——任务3" class="headerlink" title="AI夏令营第三期 - 用户新增预测挑战赛教程——任务3"></a>AI夏令营第三期 - 用户新增预测挑战赛教程——任务3</h1><blockquote>
+<p>模型迭代优化</p>
+</blockquote>
+<h2 id="1-特征的组合和交互"><a href="#1-特征的组合和交互" class="headerlink" title="1. 特征的组合和交互"></a>1. 特征的组合和交互</h2><p>将不同特征进行<strong>组合、相乘、相除</strong>等操作，创建新的特征，以捕捉特征之间的复杂关系</p>
+<ol>
+<li>用户特征（<code>x1</code>-<code>x8</code>）的组合特征</li>
+</ol>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">binary_freq</span>(<span class="params">df,col_1,col_2</span>):</span><br><span class="line">    new_col = col_1+<span class="string">'_'</span>+col_2 + <span class="string">'_freq'</span></span><br><span class="line">    df[new_col] = (df[col_1].<span class="built_in">map</span>(<span class="built_in">str</span>)+<span class="string">'_'</span>+df[col_2].<span class="built_in">map</span>(<span class="built_in">str</span>)).<span class="built_in">map</span>((df[col_1].<span class="built_in">map</span>(<span class="built_in">str</span>)+<span class="string">'_'</span>+ df[col_2].<span class="built_in">map</span>(<span class="built_in">str</span>)).value_counts())</span><br></pre></td></tr></tbody></table></figure>
+
+<ol start="2">
+<li>访问属性ID组合统计频数</li>
+</ol>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">train_data[[<span class="string">'key_name'</span>,<span class="string">'key_freq'</span>]]</span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="/pic/task3/image-20230825153116328.png" alt="image-20230825153116328"></p>
+<h2 id="2-特征编码"><a href="#2-特征编码" class="headerlink" title="2. 特征编码"></a>2. 特征编码</h2><p>baseline中采用的target均值就是一种target encoding，但是这样存在明显的缺点，因为类别信息或多或少会被泄露到训练的特征中，容易造成过拟合，因此采用K-fold Target encoding，代码参考<a target="_blank" rel="noopener" href="https://github.com/pourya-ir/Medium">GitHub - pourya-ir/Medium</a>，得到部分结果如下：</p>
+<p><img src="/pic/task3/image-20230825155544235.png" alt="image-20230825155544235"></p>
+<h2 id="3-时间特征"><a href="#3-时间特征" class="headerlink" title="3. 时间特征"></a>3. 时间特征</h2><ol>
+<li>是否为节日？</li>
+</ol>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">is_weekday</span>(<span class="params">date</span>):</span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        判断是否为工作日</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        Y = date.year</span><br><span class="line">        M = date.month</span><br><span class="line">        D = date.day</span><br><span class="line">        april_ = datetime.date(Y, M, D)</span><br><span class="line">        <span class="keyword">if</span> april_:</span><br><span class="line">            april_last = <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            april_last = <span class="number">0</span></span><br><span class="line">        <span class="keyword">return</span> april_last</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">is_holidays</span>(<span class="params">date</span>):</span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        判断是否为节假日</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        Y = date.year</span><br><span class="line">        M = date.month</span><br><span class="line">        D = date.day</span><br><span class="line">        april_last = datetime.date(Y, M, D)</span><br><span class="line">        <span class="keyword">return</span> is_holiday(april_last)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">is_festival</span>(<span class="params">date</span>):</span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    判断是否为节日</span></span><br><span class="line"><span class="string">    注意：有些时间属于相关节日的调休日也会显示出节日名称，可参考源码https://pypi.org/project/chinesecalendar/</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    Y = date.year</span><br><span class="line">    M = date.month</span><br><span class="line">    D = date.day</span><br><span class="line">    april_last = datetime.date(Y, M, D)</span><br><span class="line">    on_holiday, holiday_name = calendar.get_holiday_detail(april_last)</span><br><span class="line">    <span class="keyword">if</span> on_holiday:</span><br><span class="line">        april_last = <span class="number">1</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        april_last = <span class="number">0</span></span><br><span class="line">    <span class="keyword">return</span> april_last </span><br><span class="line"> </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    today = datetime.datetime.now()</span><br><span class="line">    week = is_weekday(today)</span><br><span class="line">    holiday = is_holidays(today)</span><br><span class="line">    festival = is_festival(today)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"week-{}"</span>.<span class="built_in">format</span>(week))</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"holiday-{}"</span>.<span class="built_in">format</span>(holiday))</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"festival-{}-"</span>.<span class="built_in">format</span>(festival))</span><br><span class="line">    <span class="built_in">print</span>(today)</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">train_data[<span class="string">'is_weekday'</span>] = train_data[<span class="string">'common_ts'</span>].apply(is_weekday)</span><br><span class="line">test_data[<span class="string">'is_weekday'</span>] = test_data[<span class="string">'common_ts'</span>].apply(is_weekday)</span><br><span class="line"></span><br><span class="line">train_data[<span class="string">'is_festival'</span>] = train_data[<span class="string">'common_ts'</span>].apply(is_festival)</span><br><span class="line">test_data[<span class="string">'is_festival'</span>] = test_data[<span class="string">'common_ts'</span>].apply(is_festival)</span><br></pre></td></tr></tbody></table></figure>
+
+<ol start="2">
+<li>时间分段</li>
+</ol>
+<p>根据绘图，将时间划为7月6日之前和7月6日之后两个时期</p>
+<p><img src="/pic/task3/image-20230825155226152.png" alt="image-20230825155226152"></p>
+<h2 id="4-特征筛选"><a href="#4-特征筛选" class="headerlink" title="4. 特征筛选"></a>4. 特征筛选</h2><ol>
+<li>热力图</li>
+</ol>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sns.set_context({<span class="string">'figure.figsize'</span>:[<span class="number">20</span>, <span class="number">20</span>]})</span><br><span class="line">sns.heatmap(train_data.drop([<span class="string">'udmap'</span>, <span class="string">'common_ts'</span>, <span class="string">'uuid'</span>, <span class="string">'key_name'</span> ],axis=<span class="number">1</span>).corr(),cmap=<span class="string">"YlGnBu"</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="/pic/task3/%E4%B8%8B%E8%BD%BD.png" alt="下载"></p>
+<ol start="2">
+<li>利用树模型的特征重要性</li>
+</ol>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 重要性</span></span><br><span class="line">plt.rcParams[<span class="string">'font.sans-serif'</span>] = [<span class="string">'SimHei'</span>]  <span class="comment"># 显示中文黑体</span></span><br><span class="line"><span class="comment"># plt.rcParams['axes.unicode_minus'] = False # 负值显示</span></span><br><span class="line">plt.barh(features_import[<span class="string">'feature'</span>], features_import[<span class="string">'importance'</span>], height=<span class="number">0.7</span>, color=<span class="string">'#008792'</span>, edgecolor=<span class="string">'#005344'</span>) <span class="comment"># 更多颜色可参见颜色大全</span></span><br><span class="line">plt.xlabel(<span class="string">'feature importance'</span>) <span class="comment"># x 轴</span></span><br><span class="line">plt.ylabel(<span class="string">'features'</span>) <span class="comment"># y轴</span></span><br><span class="line">plt.title(<span class="string">'Feature Importances'</span>) <span class="comment"># 标题</span></span><br><span class="line"><span class="keyword">for</span> a,b <span class="keyword">in</span> <span class="built_in">zip</span>( features_import[<span class="string">'importance'</span>],features_import[<span class="string">'feature'</span>]): <span class="comment"># 添加数字标签</span></span><br><span class="line">   plt.text(a+<span class="number">0.001</span>, b,<span class="string">'%.3f'</span>%<span class="built_in">float</span>(a)) <span class="comment"># a+0.001代表标签位置在柱形图上方0.001处</span></span><br><span class="line">plt.show()</span><br></pre></td></tr></tbody></table></figure>
+
+<p>![下载 (1)](/pic/task3/下载 (1).png)</p>
+<p>结合两者，删除重要性和相关性低的特征，最终采用模型预测得到F1-score为<code>81.097</code>%</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://example.com/2023/08/25/task3/">http://example.com/2023/08/25/task3/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Python/"># Python</a>
+                    
+                        <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"># 机器学习</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2023/08/23/task2/">AI夏令营第三期 - 用户新增预测挑战赛教程——任务2</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+  
+ <div id="gitalk-container"></div>  
+ 
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+ var gitalk = new Gitalk({  
+ clientID: 'b647c2f85009b1355e1d',  
+ clientSecret: 'b034ae0bf07e04f8819c52eb0e948a378dcbf524',  
+ repo: 'Elvais.github.io',  
+ owner: 'Elvais',  
+ admin: 'Elvais',  
+ id: location.pathname,  
+ labels: 'Gitalk'.split(',').filter(l => l),  
+ perPage: 10,  
+ pagerDirection: 'last',  
+ proxy: 'https://netnr-proxy.cloudno.de/https://github.com/login/oauth/access_token',
+ createIssueManually: true,  
+ distractionFreeMode: true  
+ })  
+ gitalk.render('gitalk-container')  
+</script>  
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© WuXin | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
