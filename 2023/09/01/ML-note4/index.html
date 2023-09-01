@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="WuXin">
+
+
+
+
+
+<title>机器学习基础算法之三——支持向量机 | Hexo</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+    <link rel="stylesheet" href="/../fonts/iconfont2/iconfont.css">
+    
+    <link rel="stylesheet" href="/../fonts/iconfont3/iconfont.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Elva&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">📑Posts</a>
+                
+                    <a class="menu-item" href="/category">🗃Categories</a>
+                
+                    <a class="menu-item" href="/tag">🔖Tags</a>
+                
+                    <a class="menu-item" href="/about">💡About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Elva&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">📑Posts</a>
+                
+                    <a class="menu-item" href="/category">🗃Categories</a>
+                
+                    <a class="menu-item" href="/tag">🔖Tags</a>
+                
+                    <a class="menu-item" href="/about">💡About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">机器学习基础算法之三——支持向量机</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">WuXin</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">September 1, 2023&nbsp;&nbsp;17:51:31</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/">学习记录</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="机器学习基础算法之四——决策树"><a href="#机器学习基础算法之四——决策树" class="headerlink" title="机器学习基础算法之四——决策树"></a>机器学习基础算法之四——决策树</h1><blockquote>
+<p>写在前面：根据某种决策不断<strong>对数据集进行分裂</strong>，使得到的子数据集<strong>越来越纯净</strong>，最终得到的模型为树形结构，故称为决策树</p>
+</blockquote>
+<h2 id="1-信息熵、信息增益、基尼指数"><a href="#1-信息熵、信息增益、基尼指数" class="headerlink" title="1. 信息熵、信息增益、基尼指数"></a>1. 信息熵、信息增益、基尼指数</h2><h3 id="1-1-信息熵"><a href="#1-1-信息熵" class="headerlink" title="1.1 信息熵"></a>1.1 信息熵</h3><p>信息熵是用来衡量一个集合中<strong>数据混乱度</strong>的指标：</p>
+<p><img src="/pic/ML-note4/image-20230817154247932.png" alt="image-20230817154247932"></p>
+<ul>
+<li>可以发现，当一个数据集中只有一类数据时，Ent(D)=0</li>
+</ul>
+<h3 id="1-2-信息增益"><a href="#1-2-信息增益" class="headerlink" title="1.2 信息增益"></a>1.2 信息增益</h3><p><img src="/pic/ML-note4/image-20230817155251112.png" alt="image-20230817155251112"></p>
+<ul>
+<li><p>信息增益可以反映出根据某一属性分类后，<strong>子集的纯度是否比原数据集更高</strong>，若纯度下降，则说明该属性不能很好的将样本区分开</p>
+</li>
+<li><p>缺点：信息增益最大的缺点是偏向选择<strong>取值较多</strong>的特征，对这类特征进行划分后，每个子结点样本量少，非常容易<strong>过拟合</strong></p>
+</li>
+</ul>
+<h3 id="1-3-信息增益率"><a href="#1-3-信息增益率" class="headerlink" title="1.3 信息增益率"></a>1.3 信息增益率</h3><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/577638501">决策树(信息熵、信息增益、信息增益率、基尼指数) - 知乎 (zhihu.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/350096152">信息增益、信息增益率以及基尼指数详解 - 知乎 (zhihu.com)</a><br><img src="/pic/ML-note4/image-20230818145522272.png" alt="image-20230818145522272"></p>
+<ul>
+<li>只能用于分类</li>
+</ul>
+<h3 id="2-2-信息增益率-C4-5"><a href="#2-2-信息增益率-C4-5" class="headerlink" title="2.2 信息增益率(C4.5)"></a>2.2 信息增益率(C4.5)</h3><p>为了克服信息增益对取值较多的特征有偏好的缺陷，C4.5在信息增益的基础上添加了分母项：</p>
+<p><img src="/pic/ML-note4/image-20230818145617460.png" alt="image-20230818145617460"></p>
+<p>分母项相当于起到了一个惩罚的作用，特征数越多的属性$V$，分母会越大</p>
+<ul>
+<li>使用<strong>信息增益率</strong>又会引起偏向<strong>取值较少的特征</strong>的缺陷，因此C4.5<strong>先</strong>选择<strong>信息增益</strong><u>高于高于平均值</u>的特征，再用<u>信息增益率</u>选择最佳特征</li>
+</ul>
+<h3 id="2-3-基尼系数-CART"><a href="#2-3-基尼系数-CART" class="headerlink" title="2.3 基尼系数(CART)"></a>2.3 基尼系数(CART)</h3><p>基尼系数也是用于表征事件的不确定性，将熵定义式中的”$-log p_i$“替换为”$1-p_i$“:</p>
+<p><img src="/pic/ML-note4/image-20230818151209239.png" alt="image-20230818151209239"></p>
+<p>$K$表示target分类数，按照特征$A$分类后的基尼系数为：</p>
+<p><img src="/pic/ML-note4/image-20230818151507642.png" alt="image-20230818151507642"></p>
+<p>此时目标为，使分类前后基尼系数变化最多。</p>
+<ul>
+<li>CART可以用于建立<strong>回归树</strong>，此时<strong>不再用基尼系数</strong></li>
+<li>在构建<strong>回归CART树</strong>的时候，我们遍历特征的所有取值 ——以这个特征的这个取值为分割依据、得到两组样本 ，然后计算对这两组样本的预测误差。遍历完毕后，选取预测误差最小的那一个特征的取值 。</li>
+<li>预测误差 = （预测值-真实值）^2</li>
+<li>预测值为一组样本值的平均</li>
+</ul>
+<h2 id="3-剪枝"><a href="#3-剪枝" class="headerlink" title="3. 剪枝"></a>3. 剪枝</h2><p>决策树从上到下是从<strong>全局到局部</strong>的划分，一般我们不保留整棵树，因为树越往下分越容易受到”<strong>噪音</strong>“的影响，会产生<strong>过拟合</strong>。</p>
+<p>剪枝分为两种：</p>
+<ul>
+<li>预剪枝：提前终止部分分支继续分裂</li>
+<li>后剪枝：先生成一整棵树，再从下网上修剪</li>
+</ul>
+<h3 id="3-1-预剪枝——性能不增加则不分"><a href="#3-1-预剪枝——性能不增加则不分" class="headerlink" title="3.1 预剪枝——性能不增加则不分"></a>3.1 预剪枝——性能不增加则不分</h3><p>当划分后<strong>精度不增加</strong>，则都选择<strong>不划分</strong>（奥卡姆剃刀原则）</p>
+<ul>
+<li>优点：缩短训练<strong>时间</strong>，降低过拟合风险</li>
+<li>缺点：有些分支<strong>当前划分</strong>对性能<strong>影响不大</strong>，但是<strong>后续划分</strong>可能性能会有<strong>很大提升</strong>，从而出现<strong>欠拟合</strong>。</li>
+</ul>
+<h3 id="3-2-后剪枝——性能不增加则不剪"><a href="#3-2-后剪枝——性能不增加则不剪" class="headerlink" title="3.2 后剪枝——性能不增加则不剪"></a>3.2 后剪枝——性能不增加则不剪</h3><p>由下到上，考虑<strong>每一个节点</strong>替换为<strong>叶节点</strong>，比较替换前后验证集的精度，若<strong>性能提升则替换</strong>，否则不替换</p>
+<ul>
+<li>最大限度保留树的结点，<strong>避免欠拟合</strong></li>
+<li><strong>时间</strong>成本高</li>
+</ul>
+<h3 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h3><p>如何防止决策树过拟合？</p>
+<ul>
+<li><input disabled="" type="checkbox"> 减小树的<strong>深度</strong></li>
+<li><input disabled="" type="checkbox"> 限制<strong>叶的节点数</strong></li>
+<li><input disabled="" type="checkbox"> 设置每个节点的<strong>最小样本数</strong></li>
+<li><input disabled="" type="checkbox"> 预剪枝和后剪枝</li>
+</ul>
+<p>一句话：将所有样本根据不同特征不断分裂，每一次分裂中，同一类样本尽量走同一分支</p>
+<p>也就是使得一个分支中样本纯度尽量高，根据不同的衡量纯度的方法，得到不同的决策树</p>
+<h2 id="4-Python"><a href="#4-Python" class="headerlink" title="4. Python"></a>4. Python</h2><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> tree</span><br><span class="line"></span><br><span class="line">iris = datasets.load_iris()</span><br><span class="line">X = iris[<span class="string">'data'</span>] <span class="comment"># 原数据是字典类型</span></span><br><span class="line">y = iris.target</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line">X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=<span class="number">0.3</span>,random_state = <span class="number">1</span>,stratify =y)</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line">sr =StandardScaler()</span><br><span class="line">sr.fit(X_train)</span><br><span class="line">X_train_std = sr.transform(X_train)</span><br><span class="line">X_test_std = sr.transform(X_test)</span><br><span class="line"></span><br><span class="line">clf = tree.DecisionTreeClassifier()</span><br><span class="line">clf = clf.fit(X_train_std,y_train)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"决策树："</span>,clf.score(X_test_std,y_test))</span><br></pre></td></tr></tbody></table></figure>
+
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://example.com/2023/09/01/ML-note4/">http://example.com/2023/09/01/ML-note4/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"># 机器学习</a>
+                    
+                        <a href="/tags/python/"># python</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2023/09/01/ML-note5/">机器学习基础算法之三——支持向量机</a>
+            
+            
+            <a class="next" rel="next" href="/2023/09/01/ML-note3/">机器学习基础算法之三——支持向量机</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+  
+ <div id="gitalk-container"></div>  
+ 
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+ var gitalk = new Gitalk({  
+ clientID: 'b647c2f85009b1355e1d',  
+ clientSecret: 'b034ae0bf07e04f8819c52eb0e948a378dcbf524',  
+ repo: 'Elvais.github.io',  
+ owner: 'Elvais',  
+ admin: 'Elvais',  
+ id: location.pathname,  
+ labels: 'Gitalk'.split(',').filter(l => l),  
+ perPage: 10,  
+ pagerDirection: 'last',  
+ proxy: 'https://netnr-proxy.cloudno.de/https://github.com/login/oauth/access_token',
+ createIssueManually: true,  
+ distractionFreeMode: true  
+ })  
+ gitalk.render('gitalk-container')  
+</script>  
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© WuXin | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

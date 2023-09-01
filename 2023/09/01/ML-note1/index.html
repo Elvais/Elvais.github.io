@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="WuXin">
+
+
+
+
+
+<title>机器学习基础算法之一——线性回归 | Hexo</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+    <link rel="stylesheet" href="/../fonts/iconfont2/iconfont.css">
+    
+    <link rel="stylesheet" href="/../fonts/iconfont3/iconfont.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Elva&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">📑Posts</a>
+                
+                    <a class="menu-item" href="/category">🗃Categories</a>
+                
+                    <a class="menu-item" href="/tag">🔖Tags</a>
+                
+                    <a class="menu-item" href="/about">💡About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Elva&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">📑Posts</a>
+                
+                    <a class="menu-item" href="/category">🗃Categories</a>
+                
+                    <a class="menu-item" href="/tag">🔖Tags</a>
+                
+                    <a class="menu-item" href="/about">💡About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">机器学习基础算法之一——线性回归</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">WuXin</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">September 1, 2023&nbsp;&nbsp;17:50:58</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/">学习记录</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="机器学习基础算法之一——线性回归"><a href="#机器学习基础算法之一——线性回归" class="headerlink" title="机器学习基础算法之一——线性回归"></a>机器学习基础算法之一——线性回归</h1><blockquote>
+<p>写在前面：整理以下机器学习的常用算法，以便后续复习回顾</p>
+</blockquote>
+<h2 id="1-简述"><a href="#1-简述" class="headerlink" title="1. 简述"></a>1. 简述</h2><p>线性回归的目的是：针对<strong>一个或者多个自变量</strong>与一个<strong>连续</strong>的<strong>因变量</strong>之间的<strong>线性关系</strong>建模。该模型的目标就是<strong>找到一条最优直线，使得预测结果与真是结果误差最小</strong>。</p>
+<h2 id="2-模型的建立"><a href="#2-模型的建立" class="headerlink" title="2. 模型的建立"></a>2. 模型的建立</h2><p>它的推导过程一般分为以下几个步骤：</p>
+<ol>
+<li>基本假设：假设因变量$y$与自变量$x=\left{x_1,x_2,…,x_n\right}$之间存在线性关系，可以表示为：</li>
+</ol>
+<p>$$ y=w_0x_0+w_1x_1+…+w_mx_m=\sum_{i=0}^n{w_ix_i}+\varepsilon=w^Tx+\varepsilon$$</p>
+<p>在统计学中，它同时还包括几个模型假定：</p>
+<p>（1）误差项$\varepsilon$之间相互独立</p>
+<p>（2）自变量之间相互独立，否则会出现多重共线性</p>
+<p>（3）误差项$\varepsilon$的期望为0，方差为常数，即”零均值，同方差“（高斯-马尔可夫条件）</p>
+<p>（4）$\varepsilon$服从正态分布</p>
+<ol start="2">
+<li>在确定用线性模型处理数据之前，往往不可缺少的步骤就是可视化+求相关系数矩阵，确认模型存在较强的线性关系，以及是否呈现正态分布，是否存在异常值数据。</li>
+</ol>
+<p><img src="/pic/ML-note1/image-20230812152521190.png" alt="image-20230812152521190"></p>
+<ol start="3">
+<li><p>上一节提到过线性回归就是通过样本点找到最佳拟合直线，因此如何确定“最佳”就需要给出评估标准，常用的评估拟合效果的方法就是：普通最小二乘法(OLS)，即通过最小化样本值与预测值之间的平方误差$\sum_{i=0}^n{\left(y_i-\hat{y}_i \right)^2}$获得模型参数</p>
+</li>
+<li><p>通过平方误差求偏导，可以得到模型参数的解析解为：$W=\left(X^TX\right)^{-1}X^Ty$</p>
+</li>
+<li><p>使用得到的参数向量$W$对新样本进行预测</p>
+</li>
+</ol>
+<p>但是，在实际应用中，当数据量较大时，求解矩阵的逆运算量非常大，且当模型的假设不能很好满足时，逆往往不存在，因此我们通常采用数值解逼近解析解。</p>
+<h2 id="3-梯度下降"><a href="#3-梯度下降" class="headerlink" title="3. 梯度下降"></a>3. 梯度下降</h2><h3 id="3-1-损失函数"><a href="#3-1-损失函数" class="headerlink" title="3.1 损失函数"></a>3.1 损失函数</h3><p>首先定义损失函数：</p>
+<p>$$J\left(w\right)=\frac{1}{2}\sum_{i=0}^n{\left(y_i-\hat{y}_i \right)^2}$$</p>
+<p>其中的$\frac{1}{2}$只是为了方便推导过程中的运算</p>
+<h3 id="3-2-批量梯度下降"><a href="#3-2-批量梯度下降" class="headerlink" title="3.2 批量梯度下降"></a>3.2 批量梯度下降</h3><p>步骤如下：</p>
+<ol>
+<li>随机初始化模型参数$w$</li>
+<li>计算损失函数在当前值关于参数的梯度，即每个参数对损失函数的偏导数</li>
+<li>选择负梯度方向为下降方向，$\alpha$为每一步的步长，也被称为学习率。则迭代的参数值为$w_i = w_i-\alpha\left(\frac{\partial J}{\partial w}\right)$. 当学习率过小时，会导致收敛速度变慢，学习率过大时，会导致震荡或者不收敛（跳过了最优值）</li>
+<li>重复步骤2、3，直到损失函数收敛或者达到指定的迭代次数</li>
+</ol>
+<h3 id="3-3-随机梯度下降"><a href="#3-3-随机梯度下降" class="headerlink" title="3.3 随机梯度下降"></a>3.3 随机梯度下降</h3><p>随机梯度下降(SGD)是批量梯度下降的一种优化算法，通过每次只使用一个样本来更新模型参数，减少计算量，加快模型训练速度。其步骤如下：</p>
+<ol>
+<li>随机初始化模型参数$w$</li>
+<li>随机选择一个样本，并计算该样本的损失函数关于参数的梯度，即$\frac{\partial J}{\partial w}$</li>
+<li>与批量梯度下降类似，通过确定负梯度方向和步长确定更新至，通常学习率会随着迭代次数增加逐渐减小，以避免震荡或者不收敛。</li>
+<li>重复步骤2和步骤3，直到损失函数收敛或者达到指定的迭代次数</li>
+</ol>
+<p>除了加快模型训练速度的优点，随机梯度每次更新的参数收到单个样本影响，因此梯度下降具有一定的随机性，可以避免陷入局部最优解。但其缺点是随机性也可能导致收敛不稳定，需要谨慎调整学习率。</p>
+<p>代码实现：</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义线性回归类</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">LinearRegression</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self,eta = <span class="number">0.001</span>, n_iter = <span class="number">20</span></span>):</span><br><span class="line">        self._history_w = [] <span class="comment">#存放历史参数</span></span><br><span class="line">        self._cost = [] <span class="comment"># 存放损失函数</span></span><br><span class="line">        self.eta = eta</span><br><span class="line">        self.n_iter = n_iter</span><br><span class="line">        </span><br><span class="line">    <span class="comment"># 直接矩阵求逆得到</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">normal_equations</span>(<span class="params">self, X,y</span>):</span><br><span class="line">        xtx = np.dot(X.T,X)</span><br><span class="line">        xtx_inverse = np.linalg.inv(xtx)</span><br><span class="line">        tmp = np.dot(xtx_inverse, X.T)</span><br><span class="line">        self._final_w = np.dot(tmp,y)</span><br><span class="line">        <span class="keyword">return</span> self._final_w </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 批量梯度下降</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">batch_gradient_descent</span>(<span class="params">self,X,y</span>):</span><br><span class="line">        self.w_ = np.zeros(<span class="number">1</span> + X.shape[<span class="number">1</span>])</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(self.n_iter):</span><br><span class="line">            output = np.dot(X,self.w_[<span class="number">1</span>:]) + self.w_[<span class="number">0</span>]</span><br><span class="line">            errors = y - output</span><br><span class="line">            self.w_[<span class="number">1</span>:] += self.eta * X.T.dot(errors)</span><br><span class="line">            self.w_[<span class="number">0</span>] += self.eta * errors.<span class="built_in">sum</span>()</span><br><span class="line">            self._history_w.append(self.w_)</span><br><span class="line">            cost = (errors**<span class="number">2</span>).<span class="built_in">sum</span>() /<span class="number">2.0</span></span><br><span class="line">            self._cost.append(cost)</span><br><span class="line">        self._final_w = self.w_</span><br><span class="line">        <span class="keyword">return</span> self._final_w</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 随机梯度下降</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">stochastic_gradient_descent</span>(<span class="params">self,X,y</span>):</span><br><span class="line">        self.w_ = np.zeros(<span class="number">1</span> + X.shape[<span class="number">1</span>])</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(self.n_iter):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(X.shape[<span class="number">0</span>]):</span><br><span class="line">                iter_rate = <span class="number">4</span>/(<span class="number">1.0</span>+i+j)+<span class="number">0.01</span></span><br><span class="line">                output = np.dot(X[j],self.w_[<span class="number">1</span>:]) + self.w_[<span class="number">0</span>]</span><br><span class="line">                errors = y[j] - output</span><br><span class="line">                self.w_[<span class="number">1</span>:] += iter_rate * X[j].T.dot(errors)</span><br><span class="line">                self.w_[<span class="number">0</span>] = iter_rate * errors</span><br><span class="line">                self._history_w.append(self.w_)</span><br><span class="line">                self._cost.append(errors**<span class="number">2</span>/<span class="number">2.0</span>)</span><br><span class="line">        self._final_w = self.w_</span><br><span class="line">        <span class="keyword">return</span> self._final_w      </span><br><span class="line">    </span><br><span class="line">df = pd.read_csv(<span class="string">'C:/Users/Lenovo/housing.csv'</span>) <span class="comment">#导入数据</span></span><br><span class="line">df.head()</span><br><span class="line"></span><br><span class="line">X = df[[<span class="string">'RM'</span>]].values</span><br><span class="line">y = df [[<span class="string">'MEDV'</span>]].values</span><br><span class="line"></span><br><span class="line">sc_x = StandardScaler()</span><br><span class="line">sc_y = StandardScaler()</span><br><span class="line">X_std = sc_x.fit_transform(X) <span class="comment"># 仍是多维数据形式</span></span><br><span class="line">y_std = sc_y.fit_transform(y[:np.newaxis]).flatten() <span class="comment"># 先用StandardScaler返回比例尺度调整后的变量，为了方便用flatten（）方法将其转换回原来的一维阵列</span></span><br><span class="line"></span><br><span class="line">lr = LinearRegression()</span><br><span class="line">lr.normal_equations(X_std,y_std) <span class="comment"># 求逆直求得</span></span><br><span class="line">lr.stochastic_gradient_descent(X_std,y_std) <span class="comment">#批量梯度下降</span></span><br><span class="line">lr.stochastic_gradient_descent(X_std,y_std) <span class="comment">#随机梯度下降</span></span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<p>目前还可以直接用python中的scikit-learn直接调用函数估计</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LinearRegression</span><br><span class="line">slr = LinearRegression()</span><br><span class="line">slr.fit(X,y)</span><br><span class="line"><span class="built_in">print</span>(slr.coef_[<span class="number">0</span>])</span><br><span class="line"><span class="built_in">print</span>(slr.intercept_)</span><br></pre></td></tr></tbody></table></figure>
+
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://example.com/2023/09/01/ML-note1/">http://example.com/2023/09/01/ML-note1/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"># 机器学习</a>
+                    
+                        <a href="/tags/python/"># python</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2023/09/01/ML-note2/">机器学习基础算法之二——逻辑回归</a>
+            
+            
+            <a class="next" rel="next" href="/2023/08/25/task3/">AI夏令营第三期 - 用户新增预测挑战赛教程——任务3</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+  
+ <div id="gitalk-container"></div>  
+ 
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+ var gitalk = new Gitalk({  
+ clientID: 'b647c2f85009b1355e1d',  
+ clientSecret: 'b034ae0bf07e04f8819c52eb0e948a378dcbf524',  
+ repo: 'Elvais.github.io',  
+ owner: 'Elvais',  
+ admin: 'Elvais',  
+ id: location.pathname,  
+ labels: 'Gitalk'.split(',').filter(l => l),  
+ perPage: 10,  
+ pagerDirection: 'last',  
+ proxy: 'https://netnr-proxy.cloudno.de/https://github.com/login/oauth/access_token',
+ createIssueManually: true,  
+ distractionFreeMode: true  
+ })  
+ gitalk.render('gitalk-container')  
+</script>  
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© WuXin | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

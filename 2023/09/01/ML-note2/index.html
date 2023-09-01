@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="WuXin">
+
+
+
+
+
+<title>机器学习基础算法之二——逻辑回归 | Hexo</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+    <link rel="stylesheet" href="/../fonts/iconfont2/iconfont.css">
+    
+    <link rel="stylesheet" href="/../fonts/iconfont3/iconfont.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Elva&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">📑Posts</a>
+                
+                    <a class="menu-item" href="/category">🗃Categories</a>
+                
+                    <a class="menu-item" href="/tag">🔖Tags</a>
+                
+                    <a class="menu-item" href="/about">💡About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Elva&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">📑Posts</a>
+                
+                    <a class="menu-item" href="/category">🗃Categories</a>
+                
+                    <a class="menu-item" href="/tag">🔖Tags</a>
+                
+                    <a class="menu-item" href="/about">💡About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">机器学习基础算法之二——逻辑回归</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">WuXin</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">September 1, 2023&nbsp;&nbsp;17:51:16</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/">学习记录</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="机器学习基础算法之二——逻辑回归"><a href="#机器学习基础算法之二——逻辑回归" class="headerlink" title="机器学习基础算法之二——逻辑回归"></a>机器学习基础算法之二——逻辑回归</h1><blockquote>
+<p>写在前面：逻辑回归是一种常用二分类方法，也可以拓展到多维</p>
+</blockquote>
+<h2 id="1-理论概述"><a href="#1-理论概述" class="headerlink" title="1.理论概述"></a>1.理论概述</h2><h3 id="1-1-主要思想"><a href="#1-1-主要思想" class="headerlink" title="1.1 主要思想"></a>1.1 主要思想</h3><p>逻辑回归的主要思想就是用<strong>线性回归模型的预测值(wx+b)<strong>逼近</strong>真实标记出现的概率P(Y=1|x)</strong></p>
+<h3 id="1-2-实现方法"><a href="#1-2-实现方法" class="headerlink" title="1.2 实现方法"></a>1.2 实现方法</h3><p>由于二分类问题的结果是离散输出，而线性回归模型的输出是<strong>连续输出</strong>，因此对于分类问题，并不能用线性回归直接解决。</p>
+<p>逻辑回归提出<strong>将预测目标转换为概率</strong>，但是仍然存在问题，wx+b的取值范围为R，而预测概率的取值范围为[0,1]，因此<strong>引入sigmid函数</strong>：y=1/(1+e^(-x)). sigmoid函数将数据<strong>从实数轴映射到[0,1]区间</strong>上，此时建立的模型即为：</p>
+<p><img src="/pic/ML-note2/image-20230814163521072.png" alt="image-20230814163521072"></p>
+<p>最后，根据预测得到的后验概率，还需要确定阈值，即当后验概率超过多少时，预测的分类结果为Y=1.</p>
+<h3 id="1-3-损失函数"><a href="#1-3-损失函数" class="headerlink" title="1.3 损失函数"></a>1.3 损失函数</h3><ol>
+<li>极大似然法，寻找目标参数，使得样本在该参数下出现的<strong>似然度</strong>最大。</li>
+<li>将后验概率简记如下：</li>
+</ol>
+<p><img src="/pic/ML-note2/image-20230814164232681.png" alt="image-20230814164232681"></p>
+<p>则似然函数为：</p>
+<p><img src="/pic/ML-note2/image-20230814164523404.png" alt="image-20230814164523404"></p>
+<p>对数似然函数：</p>
+<p><img src="/pic/ML-note2/image-20230814164636990.png" alt="image-20230814164636990"></p>
+<ol start="3">
+<li><strong>损失函数</strong>取为<strong>负平均对数似然函数</strong>：</li>
+</ol>
+<p><img src="/pic/ML-note2/image-20230814164927683.png" alt="image-20230814164927683"></p>
+<p>这样，<strong>最大化似然函数 = 最小化代价函数</strong></p>
+<h3 id="1-4-参数求解"><a href="#1-4-参数求解" class="headerlink" title="1.4 参数求解"></a>1.4 参数求解</h3><h4 id="1-4-1-梯度下降"><a href="#1-4-1-梯度下降" class="headerlink" title="1.4.1 梯度下降"></a>1.4.1 梯度下降</h4><p>按照《线性回归》类似</p>
+<h4 id="1-4-2-牛顿法"><a href="#1-4-2-牛顿法" class="headerlink" title="1.4.2 牛顿法"></a>1.4.2 牛顿法</h4><p>牛顿法的基本思想：</p>
+<p>假设当前极小值的估计值为wk，则</p>
+<p><img src="/pic/ML-note2/image-20230814170249158.png" alt="image-20230814170249158"></p>
+<p>注：牛顿法要求目标函数二阶连续可微</p>
+<h3 id="1-5-优缺点"><a href="#1-5-优缺点" class="headerlink" title="1.5 优缺点"></a>1.5 优缺点</h3><p>逻辑回归的优缺点如下：</p>
+<p><strong>缺点：</strong>只适用于线性可分的情况</p>
+<p><strong>优点：</strong></p>
+<ol>
+<li>直接对分类概率建模，不需要假设数据分布</li>
+<li>不仅预测类别，还能得到该预测的概率</li>
+</ol>
+<h2 id="2-思考：如何将逻辑回归拓展到多维？"><a href="#2-思考：如何将逻辑回归拓展到多维？" class="headerlink" title="2. 思考：如何将逻辑回归拓展到多维？"></a>2. 思考：如何将逻辑回归拓展到多维？</h2><ul>
+<li>与二分类逻辑回归不同的是，多分类逻辑回归的输出是一个概率分布，用于表示<strong>一个样本属于各个类别的概率</strong></li>
+<li>此时激活函数不是sigmoid函数，而是<strong>softmax函数</strong></li>
+<li>此时第i个样本属于第r个类别的概率为：</li>
+</ul>
+<p><img src="/pic/ML-note2/image-20230814172545998.png" alt="image-20230814172545998"></p>
+<ul>
+<li>此时的似然函数如下：</li>
+</ul>
+<p><img src="/pic/ML-note2/image-20230814173103073.png" alt="image-20230814173103073"></p>
+<ul>
+<li>损失函数可以表示为：</li>
+</ul>
+<p><img src="/pic/ML-note2/image-20230814173132908.png" alt="image-20230814173132908"></p>
+<h2 id="3-Python实战"><a href="#3-Python实战" class="headerlink" title="3. Python实战"></a>3. Python实战</h2><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 鸢尾花数据导入</span></span><br><span class="line">iris = datasets.load_iris()</span><br><span class="line">X = iris.data[:,[<span class="number">2</span>,<span class="number">3</span>]]</span><br><span class="line">y = iris.target</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'Class labels：'</span>,np.unique(y))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据集分割</span></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line">X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=<span class="number">0.3</span>,</span><br><span class="line">                                                 random_state = <span class="number">1</span>,stratify = y) <span class="comment"># stratify是为了保持split前类的分布</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据集标准化</span></span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line">sc = StandardScaler()</span><br><span class="line">sc.fit(X_train) <span class="comment">#估算训练集中的均值和方差以便后续进行估算</span></span><br><span class="line">X_train_std = sc.transform(X_train) <span class="comment">#标准化</span></span><br><span class="line">X_test_std = sc.transform(X_test)<span class="comment">#使用相同的特征调整参数以确保训练集与测试集的数值具有可比性</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 从sklearn.linear_model中导入LogisticRegression类</span></span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LogisticRegression</span><br><span class="line">lr = LogisticRegression(C =<span class="number">100.0</span>, random_state = <span class="number">1</span>) <span class="comment">#c：正则化系数λ的倒数，float类型（必须是正浮点型数）越小的数值表示越强的正则化</span></span><br><span class="line">lr.fit(X_train_std,y_train)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'logistic:'</span>,lr.score(X_test_std,y_test)) <span class="comment">#在测试集上评分</span></span><br></pre></td></tr></tbody></table></figure>
+
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://example.com/2023/09/01/ML-note2/">http://example.com/2023/09/01/ML-note2/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"># 机器学习</a>
+                    
+                        <a href="/tags/python/"># python</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2023/09/01/ML-note3/">机器学习基础算法之三——支持向量机</a>
+            
+            
+            <a class="next" rel="next" href="/2023/09/01/ML-note1/">机器学习基础算法之一——线性回归</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+  
+ <div id="gitalk-container"></div>  
+ 
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+ var gitalk = new Gitalk({  
+ clientID: 'b647c2f85009b1355e1d',  
+ clientSecret: 'b034ae0bf07e04f8819c52eb0e948a378dcbf524',  
+ repo: 'Elvais.github.io',  
+ owner: 'Elvais',  
+ admin: 'Elvais',  
+ id: location.pathname,  
+ labels: 'Gitalk'.split(',').filter(l => l),  
+ perPage: 10,  
+ pagerDirection: 'last',  
+ proxy: 'https://netnr-proxy.cloudno.de/https://github.com/login/oauth/access_token',
+ createIssueManually: true,  
+ distractionFreeMode: true  
+ })  
+ gitalk.render('gitalk-container')  
+</script>  
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© WuXin | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
