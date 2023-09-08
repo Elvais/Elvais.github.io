@@ -13,7 +13,7 @@
 
 
 
-<title>机器学习基础算法之四——决策树 | Hexo</title>
+<title>基础算法之四——决策树 | Hexo</title>
 
 
 
@@ -241,7 +241,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">机器学习基础算法之四——决策树</h1>
+            <h1 class="post-title">基础算法之四——决策树</h1>
             
                 <div class="post-meta">
                     
@@ -324,14 +324,15 @@
 </ul>
 <h3 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h3><p>如何防止决策树过拟合？</p>
 <ul>
-<li>[ ] 减小树的<strong>深度</strong></li>
-<li>[ ] 限制<strong>叶的节点数</strong></li>
-<li>[ ] 设置每个节点的<strong>最小样本数</strong></li>
-<li>[ ] 预剪枝和后剪枝</li>
+<li><input disabled="" type="checkbox"> 减小树的<strong>深度</strong></li>
+<li><input disabled="" type="checkbox"> 限制<strong>叶的节点数</strong></li>
+<li><input disabled="" type="checkbox"> 设置每个节点的<strong>最小样本数</strong></li>
+<li><input disabled="" type="checkbox"> 预剪枝和后剪枝</li>
 </ul>
 <p>一句话：将所有样本根据不同特征不断分裂，每一次分裂中，同一类样本尽量走同一分支</p>
 <p>也就是使得一个分支中样本纯度尽量高，根据不同的衡量纯度的方法，得到不同的决策树</p>
 <h2 id="4-Python"><a href="#4-Python" class="headerlink" title="4. Python"></a>4. Python</h2><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> tree</span><br><span class="line"></span><br><span class="line">iris = datasets.load_iris()</span><br><span class="line">X = iris[<span class="string">'data'</span>] <span class="comment"># 原数据是字典类型</span></span><br><span class="line">y = iris.target</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line">X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=<span class="number">0.3</span>,random_state = <span class="number">1</span>,stratify =y)</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line">sr =StandardScaler()</span><br><span class="line">sr.fit(X_train)</span><br><span class="line">X_train_std = sr.transform(X_train)</span><br><span class="line">X_test_std = sr.transform(X_test)</span><br><span class="line"></span><br><span class="line">clf = tree.DecisionTreeClassifier()</span><br><span class="line">clf = clf.fit(X_train_std,y_train)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"决策树："</span>,clf.score(X_test_std,y_test))</span><br></pre></td></tr></tbody></table></figure>
+
 
         </div>
 
