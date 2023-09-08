@@ -13,7 +13,7 @@
 
 
 
-<title>基础算法之二——逻辑回归 | Hexo</title>
+<title>统计常用算法—2—逻辑回归 | Hexo</title>
 
 
 
@@ -241,7 +241,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">基础算法之二——逻辑回归</h1>
+            <h1 class="post-title">统计常用算法—2—逻辑回归</h1>
             
                 <div class="post-meta">
                     
@@ -269,7 +269,7 @@
             <blockquote>
 <p>写在前面：逻辑回归是一种常用二分类方法，也可以拓展到多维</p>
 </blockquote>
-<h2 id="1-理论概述"><a href="#1-理论概述" class="headerlink" title="1.理论概述"></a>1.理论概述</h2><h3 id="1-1-主要思想"><a href="#1-1-主要思想" class="headerlink" title="1.1 主要思想"></a>1.1 主要思想</h3><p>逻辑回归的主要思想就是用<strong>线性回归模型的预测值(wx+b)<strong>逼近</strong>真实标记出现的概率P(Y=1|x)</strong></p>
+<h2 id="1-理论概述"><a href="#1-理论概述" class="headerlink" title="1.理论概述"></a>1.理论概述</h2><h3 id="1-1-主要思想"><a href="#1-1-主要思想" class="headerlink" title="1.1 主要思想"></a>1.1 主要思想</h3><p>逻辑回归的主要思想就是用<strong>线性回归模型的预测值(wx+b)</strong>逼近<strong>真实标记出现的概率P(Y=1|x)</strong></p>
 <h3 id="1-2-实现方法"><a href="#1-2-实现方法" class="headerlink" title="1.2 实现方法"></a>1.2 实现方法</h3><p>由于二分类问题的结果是离散输出，而线性回归模型的输出是<strong>连续输出</strong>，因此对于分类问题，并不能用线性回归直接解决。</p>
 <p>逻辑回归提出<strong>将预测目标转换为概率</strong>，但是仍然存在问题，wx+b的取值范围为R，而预测概率的取值范围为[0,1]，因此<strong>引入sigmid函数</strong>：y=1/(1+e^(-x)). sigmoid函数将数据<strong>从实数轴映射到[0,1]区间</strong>上，此时建立的模型即为：</p>
 <p><img src="/pic/ML-note2/image-20230814163521072.png" alt="image-20230814163521072"></p>
@@ -283,7 +283,7 @@
 <p><img src="/pic/ML-note2/image-20230814164523404.png" alt="image-20230814164523404"></p>
 <p>对数似然函数：</p>
 <p><img src="/pic/ML-note2/image-20230814164636990.png" alt="image-20230814164636990"></p>
-<ol start="3">
+<ol>
 <li><strong>损失函数</strong>取为<strong>负平均对数似然函数</strong>：</li>
 </ol>
 <p><img src="/pic/ML-note2/image-20230814164927683.png" alt="image-20230814164927683"></p>
@@ -315,7 +315,6 @@
 </ul>
 <p><img src="/pic/ML-note2/image-20230814173132908.png" alt="image-20230814173132908"></p>
 <h2 id="3-Python实战"><a href="#3-Python实战" class="headerlink" title="3. Python实战"></a>3. Python实战</h2><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 鸢尾花数据导入</span></span><br><span class="line">iris = datasets.load_iris()</span><br><span class="line">X = iris.data[:,[<span class="number">2</span>,<span class="number">3</span>]]</span><br><span class="line">y = iris.target</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'Class labels：'</span>,np.unique(y))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据集分割</span></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line">X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=<span class="number">0.3</span>,</span><br><span class="line">                                                 random_state = <span class="number">1</span>,stratify = y) <span class="comment"># stratify是为了保持split前类的分布</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据集标准化</span></span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line">sc = StandardScaler()</span><br><span class="line">sc.fit(X_train) <span class="comment">#估算训练集中的均值和方差以便后续进行估算</span></span><br><span class="line">X_train_std = sc.transform(X_train) <span class="comment">#标准化</span></span><br><span class="line">X_test_std = sc.transform(X_test)<span class="comment">#使用相同的特征调整参数以确保训练集与测试集的数值具有可比性</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 从sklearn.linear_model中导入LogisticRegression类</span></span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LogisticRegression</span><br><span class="line">lr = LogisticRegression(C =<span class="number">100.0</span>, random_state = <span class="number">1</span>) <span class="comment">#c：正则化系数λ的倒数，float类型（必须是正浮点型数）越小的数值表示越强的正则化</span></span><br><span class="line">lr.fit(X_train_std,y_train)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'logistic:'</span>,lr.score(X_test_std,y_test)) <span class="comment">#在测试集上评分</span></span><br></pre></td></tr></tbody></table></figure>
-
 
         </div>
 
@@ -349,9 +348,9 @@
                 <span class="tag">
                     
                     
-                        <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"># 机器学习</a>
-                    
                         <a href="/tags/python/"># python</a>
+                    
+                        <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"># 机器学习</a>
                     
                         
                 </span>
@@ -364,10 +363,10 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2023/08/03/ML-note3/">机器学习基础算法之三——支持向量机</a>
+                <a class="prev" rel="prev" href="/2023/08/03/ML-note3/">统计常用算法—3—支持向量机</a>
             
             
-            <a class="next" rel="next" href="/2023/07/27/ML-note1/">基础算法之一——线性回归</a>
+            <a class="next" rel="next" href="/2023/07/27/ML-note1/">统计常用算法—1—线性回归</a>
             
         </section>
 
