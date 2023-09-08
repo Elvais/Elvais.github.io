@@ -13,7 +13,7 @@
 
 
 
-<title>机机器学习基础算法之五——K-means（无监督，样本值连续） | Hexo</title>
+<title>机器学习基础算法之三——支持向量机 | Hexo</title>
 
 
 
@@ -241,7 +241,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">机机器学习基础算法之五——K-means（无监督，样本值连续）</h1>
+            <h1 class="post-title">机器学习基础算法之三——支持向量机</h1>
             
                 <div class="post-meta">
                     
@@ -250,7 +250,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">September 1, 2023&nbsp;&nbsp;17:51:58</a>
+                        Date: <a href="#">August 3, 2023&nbsp;&nbsp;17:51:22</a>
                         </span>
                     
                     
@@ -267,52 +267,30 @@
 
         <div class="post-content">
             <blockquote>
-<p>写在前面：<strong>一句话表述</strong>——把n个样本点划分到k个类中，使划分后的<strong>组内方差和</strong>最小</p>
+<p>写在前面：支持向量机目标是找到一个超平面，能够<strong>将不同类别数据区分开</strong>，且<strong>几何间隔最大</strong></p>
 </blockquote>
-<h2 id="1-步骤"><a href="#1-步骤" class="headerlink" title="1. 步骤"></a>1. 步骤</h2><ol>
-<li>随机选择k个初始类中心</li>
-<li>将每个样本点分到离它距离最近的类中心</li>
-<li>计算每个类的重心，更新为新的类中心</li>
-<li>重复上述步骤，直到重心不再变化</li>
-</ol>
-<h2 id="2-提问"><a href="#2-提问" class="headerlink" title="2. 提问"></a>2. 提问</h2><ul>
-<li><p>[ ] <strong>k</strong>如何选择？</p>
-<p>答：当k=样本数n时，组内方差和最小，为0，但这显然不符合聚类的目的，因此我们是要选择<strong>组内方差和较小但不是最小的k</strong><br>可以通过组内方差和的<strong>碎石图</strong>来选择，选择<strong>拐点处的k</strong>作为聚类数（这说明k此时增大，能够带来的组内方差和减小量不多）</p>
-</li>
-<li><p>[ ] <strong>初始样本中心</strong>如何选择？</p>
-<p>1、指定最小距离，保证初始点间的距离都不小于最小距离<br>2、选择k个等距网格点（可以不为样本点）<br>3、选择k个相互距离最远的样本点<br>4、首先用<strong>系统聚类法</strong>进行聚类，将聚类后的集群中心作为初始点</p>
-</li>
+<h2 id="1-不同情形下的SVM"><a href="#1-不同情形下的SVM" class="headerlink" title="1. 不同情形下的SVM"></a>1. 不同情形下的SVM</h2><p><img src="/pic/ML-note3/image-20230816161349572.png" alt="image-20230816161349572"></p>
+<h2 id="2-几何间隔"><a href="#2-几何间隔" class="headerlink" title="2. 几何间隔"></a>2. 几何间隔</h2><p><img src="/pic/ML-note3/image-20230816161426094.png" alt="image-20230816161426094"></p>
+<p><img src="/pic/ML-note3/image-20230816161443096.png" alt="image-20230816161443096"></p>
+<h2 id="3-理解支持向量机——线性可分"><a href="#3-理解支持向量机——线性可分" class="headerlink" title="3. 理解支持向量机——线性可分"></a>3. 理解支持向量机——线性可分</h2><p><img src="/pic/ML-note3/image-20230816161531835.png" alt="image-20230816161531835"></p>
+<ul>
+<li>几何解释</li>
 </ul>
-<h2 id="3-优缺点"><a href="#3-优缺点" class="headerlink" title="3. 优缺点"></a>3. 优缺点</h2><h3 id="3-1-缺点"><a href="#3-1-缺点" class="headerlink" title="3.1 缺点"></a>3.1 缺点</h3><p>1、对初始种子的选择比较敏感<br>2、k需要人为设定<br>3、对异常值比较敏感<br>4、 不平衡数据聚类效果较差<br>5、每一次迭代都要一次样本点，当样本点数量较多时，收敛时间较长</p>
-<h3 id="3-2-优点"><a href="#3-2-优点" class="headerlink" title="3.2 优点"></a>3.2 优点</h3><p>1、适合<strong>样本量不多</strong>，<strong>连续</strong>性数值输入<br>2、参数少，原理简单</p>
-<h2 id="4-Python-实现"><a href="#4-Python-实现" class="headerlink" title="4. Python 实现"></a>4. Python 实现</h2><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> tree</span><br><span class="line"></span><br><span class="line">iris = datasets.load_iris()</span><br><span class="line">X = iris[<span class="string">'data'</span>] <span class="comment"># 原数据是字典类型</span></span><br><span class="line">y = iris.target</span><br><span class="line"></span><br><span class="line"><span class="comment"># 无监督算法，不用切割训练集和测试集</span></span><br><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> KMeans</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"></span><br><span class="line">st = StandardScaler()</span><br><span class="line">st.fit(X)</span><br><span class="line">X_std = st.transform(X)</span><br><span class="line"></span><br><span class="line">km = KMeans(n_clusters=<span class="number">3</span>,random_state= <span class="number">123</span>)</span><br><span class="line">y_pred = km.fit_predict(X_std)</span><br><span class="line"></span><br><span class="line"><span class="comment"># labels_属性获取聚类标签</span></span><br><span class="line">label_km = km.labels_</span><br><span class="line"><span class="built_in">print</span>(label_km)</span><br><span class="line"></span><br><span class="line"><span class="comment"># cluster_centers_获取聚类中心</span></span><br><span class="line">center = km.cluster_centers_</span><br><span class="line">df_center = pd.DataFrame(center,columns=[<span class="string">'x1'</span>,<span class="string">'x2'</span>,<span class="string">'x3'</span>,<span class="string">'x4'</span>],index=[<span class="string">'label_0'</span>,<span class="string">'label_1'</span>,<span class="string">'label_2'</span>])</span><br><span class="line">df_center</span><br></pre></td></tr></tbody></table></figure>
-<h2 id="5-如何从缺点优化sklearn-中的k-means？-样本量-迭代次数"><a href="#5-如何从缺点优化sklearn-中的k-means？-样本量-迭代次数" class="headerlink" title="5. 如何从缺点优化sklearn 中的k-means？(样本量+迭代次数)"></a>5. 如何从缺点优化sklearn 中的k-means？(样本量+迭代次数)</h2><ul>
-<li>首先明确原因，即每一次迭代<strong>样本量较大</strong>，且达到收敛时<strong>迭代次数较多</strong></li>
-</ul>
-<h3 id="5-1-mini-batch-减小样本量"><a href="#5-1-mini-batch-减小样本量" class="headerlink" title="5.1 mini batch (减小样本量)"></a>5.1 mini batch (减小样本量)</h3><ul>
-<li><p>即每一次随机抽取<strong>一部分样本</strong>代替整体，并寻找对应的集群中心。</p>
-</li>
-<li><p>为避免随机抽样中出现样本点代表性不强的情况，可以<strong>重复多次采样</strong>，将每次采样得到的类中心<strong>取均值</strong>（当类中心趋于稳定或者达到一定迭代次数则不再重复采样）</p>
-</li>
-</ul>
-<h3 id="5-2-kmeans-减少迭代次数"><a href="#5-2-kmeans-减少迭代次数" class="headerlink" title="5.2 kmeans++ (减少迭代次数)"></a>5.2 kmeans++ (减少迭代次数)</h3><ul>
-<li><p>迂回达到目标：算法的思路是kmeans的核心，所以从修改kmeans思想上不太可行，但是可以通过<strong>修改初始类中心</strong></p>
-</li>
-<li><p>首先需要说明：样本点作为初始点&gt; 随机一个点作为初始点</p>
-</li>
-<li><p>其次：选的初始点当然越分散越好，因为距离越近，就越可能属于一个类</p>
-</li>
-<li><p>算法原理：</p>
-</li>
-</ul>
-<ol>
-<li><p>随机选择一个初始点</p>
-</li>
-<li><p>选择下一个点，距离初始点越远的样本点被选为下一个初始点的概率越大</p>
-</li>
-<li><p>依次类推，选出剩下k-1个样本点</p>
-</li>
-</ol>
+<p><img src="/pic/ML-note3/image-20230816161914781.png" alt="image-20230816161914781"></p>
+<p><img src="/pic/ML-note3/image-20230816161545118.png" alt="image-20230816161545118"></p>
+<p><img src="/pic/ML-note3/image-20230816161619635.png" alt="image-20230816161619635"></p>
+<p><img src="/pic/ML-note3/image-20230816161641497.png" alt="image-20230816161641497"></p>
+<p><img src="/pic/ML-note3/image-20230816161658588.png" alt="image-20230816161658588"></p>
+<p><img src="/pic/ML-note3/image-20230816161708269.png" alt="image-20230816161708269"></p>
+<p><img src="/pic/ML-note3/image-20230816161719468.png" alt="image-20230816161719468"></p>
+<h2 id="4-其他问题"><a href="#4-其他问题" class="headerlink" title="4. 其他问题"></a>4. 其他问题</h2><p>软间隔——引入<strong>松弛变量</strong>处理<strong>非线性可分</strong>数据，允许在<strong>分类错误存在</strong>的情况下<strong>增加适当的惩罚</strong>确保优化可以收敛</p>
+<p><img src="/pic/ML-note3/image-20230816161806984.png" alt="image-20230816161806984"></p>
+<p><strong>其实就是增加数据维数，经非线性可分问题转化为更高维的线性可分问题</strong></p>
+<h2 id="5-核函数"><a href="#5-核函数" class="headerlink" title="5. 核函数"></a>5. 核函数</h2><p>线性支持向量机对偶问题中的涉及到的目标函数只涉及样本和样本的内积，因此核函数直接定义高维空间中样本内积，替代原来的内积</p>
+<p><img src="/pic/ML-note3/image-20230816192006557.png" alt="image-20230816192006557"></p>
+<p><img src="/pic/ML-note3/image-20230816192110260.png" alt="image-20230816192110260"></p>
+<h2 id="6-python实现"><a href="#6-python实现" class="headerlink" title="6. python实现"></a>6. python实现</h2><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.svm <span class="keyword">import</span> SVC</span><br><span class="line">svm = SVC(kernel=<span class="string">'linear'</span>, C=<span class="number">1.0</span>,random_state=<span class="number">1</span>)</span><br><span class="line">svm.fit(X_train_std,y_train)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"SVM: "</span>,svm.score(X_test_std,y_test))</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svc参数设置</span></span><br><span class="line"><span class="comment"># C：惩罚松弛变量，C越小，允许出现的错误分类越多，泛化能力强</span></span><br><span class="line"><span class="comment"># kernal: 核函数，默认为rbf，可选"linear""poly""sigmoid""precomputed""</span></span><br><span class="line"><span class="comment"># ploy:多项式</span></span><br><span class="line"><span class="comment"># rbf: exp(-gamma|u-v|^2)</span></span><br><span class="line"><span class="comment"># sigmoid: tanh(gamma*u'*v + coef0)</span></span><br></pre></td></tr></tbody></table></figure>
 
         </div>
 
@@ -322,7 +300,7 @@
                 
                     <p class="copyright-item">
                         <span>Permalink:</span>
-                        <span><a href="http://example.com/2023/09/01/ML-note5/">http://example.com/2023/09/01/ML-note5/</a></span>
+                        <span><a href="http://example.com/2023/08/03/ML-note3/">http://example.com/2023/08/03/ML-note3/</a></span>
                     </p>
                 
                 
@@ -361,8 +339,10 @@
         </section>
         <section class="post-nav">
             
+                <a class="prev" rel="prev" href="/2023/08/06/ML-note4/">机器学习基础算法之四——决策树</a>
             
-            <a class="next" rel="next" href="/2023/09/01/ML-note4/">机器学习基础算法之四——决策树</a>
+            
+            <a class="next" rel="next" href="/2023/08/01/ML-note2/">机器学习基础算法之二——逻辑回归</a>
             
         </section>
 

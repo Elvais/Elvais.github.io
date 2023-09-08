@@ -13,7 +13,7 @@
 
 
 
-<title>机器学习基础算法之二——逻辑回归 | Hexo</title>
+<title>机器学习基础算法之四——决策树 | Hexo</title>
 
 
 
@@ -241,7 +241,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">机器学习基础算法之二——逻辑回归</h1>
+            <h1 class="post-title">机器学习基础算法之四——决策树</h1>
             
                 <div class="post-meta">
                     
@@ -250,7 +250,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">September 1, 2023&nbsp;&nbsp;17:51:16</a>
+                        Date: <a href="#">August 6, 2023&nbsp;&nbsp;17:51:31</a>
                         </span>
                     
                     
@@ -267,54 +267,71 @@
 
         <div class="post-content">
             <blockquote>
-<p>写在前面：逻辑回归是一种常用二分类方法，也可以拓展到多维</p>
+<p>写在前面：根据某种决策不断<strong>对数据集进行分裂</strong>，使得到的子数据集<strong>越来越纯净</strong>，最终得到的模型为树形结构，故称为决策树</p>
 </blockquote>
-<h2 id="1-理论概述"><a href="#1-理论概述" class="headerlink" title="1.理论概述"></a>1.理论概述</h2><h3 id="1-1-主要思想"><a href="#1-1-主要思想" class="headerlink" title="1.1 主要思想"></a>1.1 主要思想</h3><p>逻辑回归的主要思想就是用<strong>线性回归模型的预测值(wx+b)</strong>逼近<strong>真实标记出现的概率P(Y=1|x)</strong></p>
-<h3 id="1-2-实现方法"><a href="#1-2-实现方法" class="headerlink" title="1.2 实现方法"></a>1.2 实现方法</h3><p>由于二分类问题的结果是离散输出，而线性回归模型的输出是<strong>连续输出</strong>，因此对于分类问题，并不能用线性回归直接解决。</p>
-<p>逻辑回归提出<strong>将预测目标转换为概率</strong>，但是仍然存在问题，wx+b的取值范围为R，而预测概率的取值范围为[0,1]，因此<strong>引入sigmid函数</strong>：y=1/(1+e^(-x)). sigmoid函数将数据<strong>从实数轴映射到[0,1]区间</strong>上，此时建立的模型即为：</p>
-<p><img src="/pic/ML-note2/image-20230814163521072.png" alt="image-20230814163521072"></p>
-<p>最后，根据预测得到的后验概率，还需要确定阈值，即当后验概率超过多少时，预测的分类结果为Y=1.</p>
-<h3 id="1-3-损失函数"><a href="#1-3-损失函数" class="headerlink" title="1.3 损失函数"></a>1.3 损失函数</h3><ol>
-<li>极大似然法，寻找目标参数，使得样本在该参数下出现的<strong>似然度</strong>最大。</li>
-<li>将后验概率简记如下：</li>
-</ol>
-<p><img src="/pic/ML-note2/image-20230814164232681.png" alt="image-20230814164232681"></p>
-<p>则似然函数为：</p>
-<p><img src="/pic/ML-note2/image-20230814164523404.png" alt="image-20230814164523404"></p>
-<p>对数似然函数：</p>
-<p><img src="/pic/ML-note2/image-20230814164636990.png" alt="image-20230814164636990"></p>
-<ol>
-<li><strong>损失函数</strong>取为<strong>负平均对数似然函数</strong>：</li>
-</ol>
-<p><img src="/pic/ML-note2/image-20230814164927683.png" alt="image-20230814164927683"></p>
-<p>这样，<strong>最大化似然函数 = 最小化代价函数</strong></p>
-<h3 id="1-4-参数求解"><a href="#1-4-参数求解" class="headerlink" title="1.4 参数求解"></a>1.4 参数求解</h3><h4 id="1-4-1-梯度下降"><a href="#1-4-1-梯度下降" class="headerlink" title="1.4.1 梯度下降"></a>1.4.1 梯度下降</h4><p>按照《线性回归》类似</p>
-<h4 id="1-4-2-牛顿法"><a href="#1-4-2-牛顿法" class="headerlink" title="1.4.2 牛顿法"></a>1.4.2 牛顿法</h4><p>牛顿法的基本思想：</p>
-<p>假设当前极小值的估计值为wk，则</p>
-<p><img src="/pic/ML-note2/image-20230814170249158.png" alt="image-20230814170249158"></p>
-<p>注：牛顿法要求目标函数二阶连续可微</p>
-<h3 id="1-5-优缺点"><a href="#1-5-优缺点" class="headerlink" title="1.5 优缺点"></a>1.5 优缺点</h3><p>逻辑回归的优缺点如下：</p>
-<p><strong>缺点：</strong>只适用于线性可分的情况</p>
-<p><strong>优点：</strong></p>
-<ol>
-<li>直接对分类概率建模，不需要假设数据分布</li>
-<li>不仅预测类别，还能得到该预测的概率</li>
-</ol>
-<h2 id="2-思考：如何将逻辑回归拓展到多维？"><a href="#2-思考：如何将逻辑回归拓展到多维？" class="headerlink" title="2. 思考：如何将逻辑回归拓展到多维？"></a>2. 思考：如何将逻辑回归拓展到多维？</h2><ul>
-<li>与二分类逻辑回归不同的是，多分类逻辑回归的输出是一个概率分布，用于表示<strong>一个样本属于各个类别的概率</strong></li>
-<li>此时激活函数不是sigmoid函数，而是<strong>softmax函数</strong></li>
-<li>此时第i个样本属于第r个类别的概率为：</li>
-</ul>
-<p><img src="/pic/ML-note2/image-20230814172545998.png" alt="image-20230814172545998"></p>
+<h2 id="1-ID3与C4-5"><a href="#1-ID3与C4-5" class="headerlink" title="1. ID3与C4.5"></a>1. ID3与C4.5</h2><hr>
+<p>ID3与C4.5分别采用<strong>信息增益</strong>和<strong>信息增益率</strong>作为分裂节点的特征选择方法</p>
+<hr>
+<h3 id="1-1-信息熵"><a href="#1-1-信息熵" class="headerlink" title="1.1 信息熵"></a>1.1 信息熵</h3><p>信息熵是用来衡量一个集合中<strong>数据混乱度</strong>的指标：</p>
+<p><img src="/pic/ML-note4/image-20230817154247932.png" alt="image-20230817154247932"></p>
 <ul>
-<li>此时的似然函数如下：</li>
+<li>可以发现，当一个数据集中只有一类数据时，Ent(D)=0</li>
 </ul>
-<p><img src="/pic/ML-note2/image-20230814173103073.png" alt="image-20230814173103073"></p>
+<h3 id="1-2-信息增益（ID3）"><a href="#1-2-信息增益（ID3）" class="headerlink" title="1.2 信息增益（ID3）"></a>1.2 信息增益（ID3）</h3><p><img src="/pic/ML-note4/image-20230817155251112.png" alt="image-20230817155251112"></p>
 <ul>
-<li>损失函数可以表示为：</li>
+<li><p>信息增益可以反映出根据某一属性分类后，<strong>子集的纯度是否比原数据集更高</strong>，若纯度下降，则说明该属性不能很好的将样本区分开</p>
+</li>
+<li><p>缺点：信息增益最大的缺点是偏向选择<strong>取值较多</strong>的特征，对这类特征进行划分后，每个子结点样本量少，非常容易<strong>过拟合</strong></p>
+</li>
 </ul>
-<p><img src="/pic/ML-note2/image-20230814173132908.png" alt="image-20230814173132908"></p>
-<h2 id="3-Python实战"><a href="#3-Python实战" class="headerlink" title="3. Python实战"></a>3. Python实战</h2><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 鸢尾花数据导入</span></span><br><span class="line">iris = datasets.load_iris()</span><br><span class="line">X = iris.data[:,[<span class="number">2</span>,<span class="number">3</span>]]</span><br><span class="line">y = iris.target</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'Class labels：'</span>,np.unique(y))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据集分割</span></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line">X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=<span class="number">0.3</span>,</span><br><span class="line">                                                 random_state = <span class="number">1</span>,stratify = y) <span class="comment"># stratify是为了保持split前类的分布</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据集标准化</span></span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line">sc = StandardScaler()</span><br><span class="line">sc.fit(X_train) <span class="comment">#估算训练集中的均值和方差以便后续进行估算</span></span><br><span class="line">X_train_std = sc.transform(X_train) <span class="comment">#标准化</span></span><br><span class="line">X_test_std = sc.transform(X_test)<span class="comment">#使用相同的特征调整参数以确保训练集与测试集的数值具有可比性</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 从sklearn.linear_model中导入LogisticRegression类</span></span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LogisticRegression</span><br><span class="line">lr = LogisticRegression(C =<span class="number">100.0</span>, random_state = <span class="number">1</span>) <span class="comment">#c：正则化系数λ的倒数，float类型（必须是正浮点型数）越小的数值表示越强的正则化</span></span><br><span class="line">lr.fit(X_train_std,y_train)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'logistic:'</span>,lr.score(X_test_std,y_test)) <span class="comment">#在测试集上评分</span></span><br></pre></td></tr></tbody></table></figure>
+<h3 id="1-3-信息增益率（C4-5）"><a href="#1-3-信息增益率（C4-5）" class="headerlink" title="1.3 信息增益率（C4.5）"></a>1.3 信息增益率（C4.5）</h3><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/577638501">决策树(信息熵、信息增益、信息增益率、基尼指数) - 知乎 (zhihu.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/350096152">信息增益、信息增益率以及基尼指数详解 - 知乎 (zhihu.com)</a><br><img src="/pic/ML-note4/image-20230818145522272.png" alt="image-20230818145522272"></p>
+<ul>
+<li>只能用于分类</li>
+</ul>
+<p>为了克服信息增益对取值较多的特征有偏好的缺陷，C4.5在信息增益的基础上添加了分母项：</p>
+<p><img src="/pic/ML-note4/image-20230818145617460.png" alt="image-20230818145617460"></p>
+<p>分母项相当于起到了一个惩罚的作用，特征数越多的属性$V$，分母会越大</p>
+<ul>
+<li>使用<strong>信息增益率</strong>又会引起偏向<strong>取值较少的特征</strong>的缺陷，因此C4.5<strong>先</strong>选择<strong>信息增益</strong><u>高于高于平均值</u>的特征，再用<u>信息增益率</u>选择最佳特征</li>
+</ul>
+<h2 id="2-基尼系数-和-CART"><a href="#2-基尼系数-和-CART" class="headerlink" title="2. 基尼系数 和 CART"></a>2. 基尼系数 和 CART</h2><p><code>基尼系数</code>也是用于表征事件的不确定性，将熵定义式中的”$-log p_i$“替换为”$1-p_i$“:</p>
+<p><img src="/pic/ML-note4/image-20230818151209239.png" alt="image-20230818151209239"></p>
+<p>$K$表示target分类数，按照特征$A$分类后的基尼系数为：</p>
+<p><img src="/pic/ML-note4/image-20230818151507642.png" alt="image-20230818151507642"></p>
+<p>此时目标为，使分类前后基尼系数变化最多。</p>
+<ul>
+<li>CART可以用于建立<strong>回归树</strong>，此时<strong>不再用基尼系数</strong></li>
+<li>在构建<strong>回归CART树</strong>的时候，我们遍历特征的所有取值 ——以这个特征的这个取值为分割依据、得到两组样本 ，然后计算对这两组样本的预测误差。遍历完毕后，选取预测误差最小的那一个特征的取值 。</li>
+<li>预测误差 = （预测值-真实值）^2</li>
+<li>预测值为一组样本值的平均</li>
+</ul>
+<h2 id="3-剪枝"><a href="#3-剪枝" class="headerlink" title="3. 剪枝"></a>3. 剪枝</h2><p>决策树从上到下是从<strong>全局到局部</strong>的划分，一般我们不保留整棵树，因为树越往下分越容易受到”<strong>噪音</strong>“的影响，会产生<strong>过拟合</strong>。</p>
+<p>剪枝分为两种：</p>
+<ul>
+<li>预剪枝：提前终止部分分支继续分裂</li>
+<li>后剪枝：先生成一整棵树，再从下网上修剪</li>
+</ul>
+<h3 id="3-1-预剪枝——性能不增加则不分"><a href="#3-1-预剪枝——性能不增加则不分" class="headerlink" title="3.1 预剪枝——性能不增加则不分"></a>3.1 预剪枝——性能不增加则不分</h3><p>当划分后<strong>精度不增加</strong>，则都选择<strong>不划分</strong>（奥卡姆剃刀原则）</p>
+<ul>
+<li>优点：缩短训练<strong>时间</strong>，降低过拟合风险</li>
+<li>缺点：有些分支<strong>当前划分</strong>对性能<strong>影响不大</strong>，但是<strong>后续划分</strong>可能性能会有<strong>很大提升</strong>，从而出现<strong>欠拟合</strong>。</li>
+</ul>
+<h3 id="3-2-后剪枝——性能不增加则不剪"><a href="#3-2-后剪枝——性能不增加则不剪" class="headerlink" title="3.2 后剪枝——性能不增加则不剪"></a>3.2 后剪枝——性能不增加则不剪</h3><p>由下到上，考虑<strong>每一个节点</strong>替换为<strong>叶节点</strong>，比较替换前后验证集的精度，若<strong>性能提升则替换</strong>，否则不替换</p>
+<ul>
+<li>最大限度保留树的结点，<strong>避免欠拟合</strong></li>
+<li><strong>时间</strong>成本高</li>
+</ul>
+<h3 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h3><p>如何防止决策树过拟合？</p>
+<ul>
+<li>[ ] 减小树的<strong>深度</strong></li>
+<li>[ ] 限制<strong>叶的节点数</strong></li>
+<li>[ ] 设置每个节点的<strong>最小样本数</strong></li>
+<li>[ ] 预剪枝和后剪枝</li>
+</ul>
+<p>一句话：将所有样本根据不同特征不断分裂，每一次分裂中，同一类样本尽量走同一分支</p>
+<p>也就是使得一个分支中样本纯度尽量高，根据不同的衡量纯度的方法，得到不同的决策树</p>
+<h2 id="4-Python"><a href="#4-Python" class="headerlink" title="4. Python"></a>4. Python</h2><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> tree</span><br><span class="line"></span><br><span class="line">iris = datasets.load_iris()</span><br><span class="line">X = iris[<span class="string">'data'</span>] <span class="comment"># 原数据是字典类型</span></span><br><span class="line">y = iris.target</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line">X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=<span class="number">0.3</span>,random_state = <span class="number">1</span>,stratify =y)</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line">sr =StandardScaler()</span><br><span class="line">sr.fit(X_train)</span><br><span class="line">X_train_std = sr.transform(X_train)</span><br><span class="line">X_test_std = sr.transform(X_test)</span><br><span class="line"></span><br><span class="line">clf = tree.DecisionTreeClassifier()</span><br><span class="line">clf = clf.fit(X_train_std,y_train)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"决策树："</span>,clf.score(X_test_std,y_test))</span><br></pre></td></tr></tbody></table></figure>
 
         </div>
 
@@ -324,7 +341,7 @@
                 
                     <p class="copyright-item">
                         <span>Permalink:</span>
-                        <span><a href="http://example.com/2023/09/01/ML-note2/">http://example.com/2023/09/01/ML-note2/</a></span>
+                        <span><a href="http://example.com/2023/08/06/ML-note4/">http://example.com/2023/08/06/ML-note4/</a></span>
                     </p>
                 
                 
@@ -363,10 +380,10 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2023/09/01/ML-note3/">机器学习基础算法之三——支持向量机</a>
+                <a class="prev" rel="prev" href="/2023/08/08/graduation-issue/">基于和Word2vec和BiLSTM的微博用户情感分析——以新十条”疫情政策为例</a>
             
             
-            <a class="next" rel="next" href="/2023/09/01/ML-note1/">机器学习基础算法之一——线性回归</a>
+            <a class="next" rel="next" href="/2023/08/03/ML-note3/">机器学习基础算法之三——支持向量机</a>
             
         </section>
 
