@@ -13,7 +13,7 @@
 
 
 
-<title>统计常用算法—5—K-means（无监督，样本值连续） | Hexo</title>
+<title>机器学习常用算法—5—K-means（无监督，样本值连续） | Hexo</title>
 
 
 
@@ -241,7 +241,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">统计常用算法—5—K-means（无监督，样本值连续）</h1>
+            <h1 class="post-title">机器学习常用算法—5—K-means（无监督，样本值连续）</h1>
             
                 <div class="post-meta">
                     
@@ -276,16 +276,21 @@
 <li>重复上述步骤，直到重心不再变化</li>
 </ol>
 <h2 id="2-提问"><a href="#2-提问" class="headerlink" title="2. 提问"></a>2. 提问</h2><ul>
-<li><p>[ ] <strong>k</strong>如何选择？</p>
+<li><p><input disabled="" type="checkbox"> 
+<strong>k</strong>如何选择？</p>
 <p>答：当k=样本数n时，组内方差和最小，为0，但这显然不符合聚类的目的，因此我们是要选择<strong>组内方差和较小但不是最小的k</strong><br>可以通过组内方差和的<strong>碎石图</strong>来选择，选择<strong>拐点处的k</strong>作为聚类数（这说明k此时增大，能够带来的组内方差和减小量不多）</p>
 </li>
-<li><p>[ ] <strong>初始样本中心</strong>如何选择？</p>
+<li><p><input disabled="" type="checkbox"> 
+<strong>初始样本中心</strong>如何选择？</p>
 <p>1、指定最小距离，保证初始点间的距离都不小于最小距离<br>2、选择k个等距网格点（可以不为样本点）<br>3、选择k个相互距离最远的样本点<br>4、首先用<strong>系统聚类法</strong>进行聚类，将聚类后的集群中心作为初始点</p>
 </li>
 </ul>
 <h2 id="3-优缺点"><a href="#3-优缺点" class="headerlink" title="3. 优缺点"></a>3. 优缺点</h2><h3 id="3-1-缺点"><a href="#3-1-缺点" class="headerlink" title="3.1 缺点"></a>3.1 缺点</h3><p>1、对初始种子的选择比较敏感<br>2、k需要人为设定<br>3、对异常值比较敏感<br>4、 不平衡数据聚类效果较差<br>5、每一次迭代都要一次样本点，当样本点数量较多时，收敛时间较长</p>
 <h3 id="3-2-优点"><a href="#3-2-优点" class="headerlink" title="3.2 优点"></a>3.2 优点</h3><p>1、适合<strong>样本量不多</strong>，<strong>连续</strong>性数值输入<br>2、参数少，原理简单</p>
 <h2 id="4-Python-实现"><a href="#4-Python-实现" class="headerlink" title="4. Python 实现"></a>4. Python 实现</h2><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> tree</span><br><span class="line"></span><br><span class="line">iris = datasets.load_iris()</span><br><span class="line">X = iris[<span class="string">'data'</span>] <span class="comment"># 原数据是字典类型</span></span><br><span class="line">y = iris.target</span><br><span class="line"></span><br><span class="line"><span class="comment"># 无监督算法，不用切割训练集和测试集</span></span><br><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> KMeans</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"></span><br><span class="line">st = StandardScaler()</span><br><span class="line">st.fit(X)</span><br><span class="line">X_std = st.transform(X)</span><br><span class="line"></span><br><span class="line">km = KMeans(n_clusters=<span class="number">3</span>,random_state= <span class="number">123</span>)</span><br><span class="line">y_pred = km.fit_predict(X_std)</span><br><span class="line"></span><br><span class="line"><span class="comment"># labels_属性获取聚类标签</span></span><br><span class="line">label_km = km.labels_</span><br><span class="line"><span class="built_in">print</span>(label_km)</span><br><span class="line"></span><br><span class="line"><span class="comment"># cluster_centers_获取聚类中心</span></span><br><span class="line">center = km.cluster_centers_</span><br><span class="line">df_center = pd.DataFrame(center,columns=[<span class="string">'x1'</span>,<span class="string">'x2'</span>,<span class="string">'x3'</span>,<span class="string">'x4'</span>],index=[<span class="string">'label_0'</span>,<span class="string">'label_1'</span>,<span class="string">'label_2'</span>])</span><br><span class="line">df_center</span><br></pre></td></tr></tbody></table></figure>
+
+
+
 <h2 id="5-如何从缺点优化sklearn-中的k-means？-样本量-迭代次数"><a href="#5-如何从缺点优化sklearn-中的k-means？-样本量-迭代次数" class="headerlink" title="5. 如何从缺点优化sklearn 中的k-means？(样本量+迭代次数)"></a>5. 如何从缺点优化sklearn 中的k-means？(样本量+迭代次数)</h2><ul>
 <li>首先明确原因，即每一次迭代<strong>样本量较大</strong>，且达到收敛时<strong>迭代次数较多</strong></li>
 </ul>
@@ -364,7 +369,7 @@
                 <a class="prev" rel="prev" href="/2023/08/18/task1/">AI夏令营-用户新增预测挑战赛教程——任务1</a>
             
             
-            <a class="next" rel="next" href="/2023/08/14/ML-note4/">统计常用算法—4—决策树</a>
+            <a class="next" rel="next" href="/2023/08/14/ML-note4/">机器学习常用算法—4—决策树</a>
             
         </section>
 
