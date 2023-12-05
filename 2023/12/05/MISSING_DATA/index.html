@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="WuXin">
+
+
+
+
+
+<title>MISSING DATA | Hexo</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+    <link rel="stylesheet" href="/../fonts/iconfont2/iconfont.css">
+    
+    <link rel="stylesheet" href="/../fonts/iconfont3/iconfont.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+            <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+        
+    
+
+
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Elva&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">📑Posts</a>
+                
+                    <a class="menu-item" href="/category">🗃Categories</a>
+                
+                    <a class="menu-item" href="/tag">🔖Tags</a>
+                
+                    <a class="menu-item" href="/about">💡About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Elva&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">📑Posts</a>
+                
+                    <a class="menu-item" href="/category">🗃Categories</a>
+                
+                    <a class="menu-item" href="/tag">🔖Tags</a>
+                
+                    <a class="menu-item" href="/about">💡About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">MISSING DATA</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">WuXin</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">December 5, 2023&nbsp;&nbsp;10:59:41</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">论文阅读</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="MISSING-DATA"><a href="#MISSING-DATA" class="headerlink" title="MISSING DATA"></a>MISSING DATA</h1><h1 id="1-Preparation"><a href="#1-Preparation" class="headerlink" title="1. Preparation"></a>1. Preparation</h1><h2 id="1-1Missing-at-random"><a href="#1-1Missing-at-random" class="headerlink" title="1.1Missing at random"></a>1.1Missing at random</h2><p>Assumption: <strong>Data are missing at random</strong>, i.e. <strong>$R\perp Y|X$</strong></p>
+<h2 id="1-2-逆概率加权"><a href="#1-2-逆概率加权" class="headerlink" title="1.2 逆概率加权"></a>1.2 逆概率加权</h2><p>$$<br>\hat\mu_{ipw}=\frac{R_iY_i}{\pi(X_i,\hat\alpha)}<br>$$</p>
+<ul>
+<li><p>$\hat \alpha$可以通过极大似然来估计：</p>
+<p>$$<br>L(X;\alpha)=\prod \limits_{i=1}^n{\pi(X_i,\alpha)^{R_i}{1-\pi(X_i,\alpha)}^{1-R_i}}<br>$$</p>
+</li>
+<li><p>$w_i=R_i/n\hat\pi(X_i)$</p>
+</li>
+<li><p>理解：样本$Y_i$的加权平均，给难以观测到（被选择的概率小的）的样本更大的权重，平衡样本[相当于增加该概率小的样本的样本量$n_i=R_i/\pi(X_i,\hat \alpha)$]，使能观测到的样本更均衡.</p>
+</li>
+<li><p>性质：由弱大数定律：$\hat\mu_{ipw}\to E(RY)/\pi(X_i)$，取条件期望可得：$E[E[(RY)/\pi(X_i)|y,X]]=\mu$</p>
+</li>
+</ul>
+<h2 id="1-3-插补法（Imputation"><a href="#1-3-插补法（Imputation" class="headerlink" title="1.3 插补法（Imputation)"></a>1.3 插补法（Imputation)</h2><blockquote>
+<p>思想：给定X，如果Y没有被观测到，那么用E(Y|X)的值代替Y</p>
+</blockquote>
+<p>如果所有Y都观测到，那么此时EX的估计值$ \hat \mu$为：<br>$$<br>\frac {1}{n} \sum \limits_{i=1}^n {Y_i}<br>$$<br>如果存在$Y_i$没有观测值，假设给定$X$时$Y$的分布为一个含参模型：<br>$$<br>P_{Y|X}(y|x,\gamma)<br>$$<br>那么：<br>$$<br>E(Y|X=x)=\int yP_{Y|X}(y|x,\gamma)dy<br>$$<br>实际估计时，$\gamma$用$\hat \gamma$代替，其中<br>$$<br>\hat \gamma = \mathop{argmax}\limits_{\gamma} \prod \limits_{R=1}P_{Y|X}(y|x,\gamma)<br>$$<br>记$\mu(x,\hat \gamma)=\int yP_{Y|X}(y|x,\hat \gamma)dy$. 因此对于所有R=0的数据，用==$\mu(X_i,\hat \gamma)$==代替代替$Y_i$, 此时, $\mu$的估计量为：<br>$$<br>\hat \mu =\frac{1}{n}  \sum \limits_{i=1}^n {R_iY_i+(1-R_i)\mu(X_i,\hat\gamma)}<br>$$</p>
+<h2 id="1-4-Double-Robust-Estimator"><a href="#1-4-Double-Robust-Estimator" class="headerlink" title="1.4 Double Robust Estimator"></a>1.4 Double Robust Estimator</h2><blockquote>
+<p>将inverse probability weighted和 imputation method 结合</p>
+</blockquote>
+<p>假设以下两个含参模型：</p>
+<ul>
+<li>$E(Y|X)=\mu(W,\gamma)$ ——imputation method 假设的参数模型</li>
+<li>$P(R=1|X=x)=\pi(x,\alpha)$ ——inverse probability weighted 假设的参数模型</li>
+</ul>
+<p>其中，参数$\gamma$和$\alpha$按照1.1和1.2中所述进行估计：$\hat \gamma$, $\hat \alpha$. 此时，Double Robust Estimator类似imputation method 中：<br>$$<br>\hat \mu_{aipw} = \frac{1}{n} \sum \limits_{i=1}^{n} (\frac {R_iY_i}{\pi(X_i,\hat \alpha)}-\frac{R_i - \pi(X_i,\hat \alpha)}{\pi(X_i,\hat\alpha)}\mu(X_i,\hat\gamma))<br>$$</p>
+<ul>
+<li><p>当$R_i=1$时，求和项为==$\frac{Y_i}{\pi(X_i,\hat\alpha)}$==，与逆概率加权中一致</p>
+</li>
+<li><p>当$R_i=0$时，求和项为==$\mu(x_i,\hat\gamma)$==，与imputation method中的插补项一致</p>
+</li>
+<li><p>可以证明$\hat\mu_{aipw}$只要求$\pi(X_i,\hat\alpha)$和$\mu(X_i.\hat\gamma)$有一个是正确的，就是渐近相合估计，这就是<strong>双重稳健性(Double robustness property)</strong></p>
+</li>
+</ul>
+<h1 id="2-paper-1"><a href="#2-paper-1" class="headerlink" title="2. paper 1"></a>2. paper 1</h1><blockquote>
+<p>目标：估计含缺失数据的<strong>总体均值</strong>：$\mu=EX$</p>
+</blockquote>
+<h3 id="2-1-Model-Building"><a href="#2-1-Model-Building" class="headerlink" title="2.1 Model Building"></a>2.1 Model Building</h3><p>关于$P(R|X)$和$E(Y|X)$的<strong>模型假设有多个</strong>：$\mathcal P={\pi^{j}(\alpha^{j};x):j=1,…,J }$ for $\pi(x)$ and $\mathcal A={a^{k}(\gamma^{k};x):k=1,…,K }$ for $a(x)$. 其中，$\alpha^{j}$和$\gamma^{k}$是相应的参数，$\alpha^{j}$通过最大化</p>
+<p>$$<br>\prod \limits_{i=1}^n{ { \pi^{j}(\alpha^{j};x) }^{R_i} { 1-\pi^{j}(\alpha^{j};x)}^{1-R_i} }<br>$$</p>
+<p>获得，$\gamma^{k}$为针对观测到的数据建立广义线性模型的回归系数。</p>
+<h3 id="2-2-Equations-of-omega-i"><a href="#2-2-Equations-of-omega-i" class="headerlink" title="2.2 Equations of $\omega_i$"></a>2.2 Equations of $\omega_i$</h3><ol>
+<li><p>$ \sum \limits_{i=1}^m{\omega_i}=1$ (regularization);</p>
+</li>
+<li><p>$ \sum \limits_{i=1}^m{\omega_i}\pi^{j}(\hat \alpha^{j};X_i)=n^{-1} \sum \limits_{i=1}^n {\pi^{j}(\hat \alpha^{j};X_i)}=:\hat \theta^{j}, (j=1,…,J)$;</p>
+</li>
+<li><p>$ \sum \limits_{i=1}^m{\omega_i}a^{k}(\hat \gamma^{k};X_i)=n^{-1} \sum \limits_{i=1}^n {a^{k}(\hat \gamma^{k};X_i)}=:\hat \eta^{k}, (k=1,…K)$.</p>
+</li>
+</ol>
+<ul>
+<li><p>等式2和3表明在<strong>有偏样本上</strong>每个假定参数函数的<strong>加权平均值</strong> = <strong>原样本</strong>的假定参数函数的<strong>平均值</strong>（理解：修正权重使有偏样本尽量接近原样本？）</p>
+</li>
+<li><p>$\omega_i$有解的充分条件是$J+K+1 \leq m$</p>
+</li>
+</ul>
+<h3 id="2-3-Solution-of-model"><a href="#2-3-Solution-of-model" class="headerlink" title="2.3 Solution of model"></a>2.3 Solution of model</h3><ol>
+<li>可以看出3.2中的三个方程是关于$\omega _i$的<strong>线性方程</strong>，模型的解为：</li>
+</ol>
+<p><img src="/pic/MISSING_DATA/image-20231021224310078.png" alt="image-20231021224310078"></p>
+<p>其中：</p>
+<ul>
+<li><p>$\hat \rho^{T}=(\hat \rho_1,…,\hat \rho_{J+K})$  satisfy  $\sum \limits_{i=1}^m{\hat g_i(\hat \alpha,\hat \gamma)/(1+\rho^{T}\hat g_i(\hat \alpha,\hat \gamma)}=0$ (*)</p>
+</li>
+<li><p>$\hat g_i(\hat \alpha,\hat \gamma)={\pi^{1}(\hat \alpha^{1};X_i), …, \pi^{J}(\hat \alpha^{J};X_i),a^{1}(\hat \gamma^{1};X_i),…,a^{K}(\hat \gamma^{K};X_i)}$</p>
+</li>
+<li><p>因此本文提出的$\mu$的估计量为$\hat \mu =\sum \limits_{i=1}^m{\hat \omega _iY_i}$</p>
+</li>
+<li><p>(*)式的根不唯一，并不是所有的$\hat \rho^{T}$都能解得$\omega _i$使$\hat \mu$有良好的性质; 通过在一定条件下<strong>选择$\hat \rho^{T}$<strong>，当</strong>$\mathcal P$包含正确的$\pi(x)$<strong>或者是</strong>$\mathcal A$包含正确的$a(x)$</strong>, $  \hat \mu$是渐近相合估计。</p>
+</li>
+</ul>
+<h1 id="3-Paper2"><a href="#3-Paper2" class="headerlink" title="3. Paper2"></a>3. Paper2</h1><blockquote>
+<p>目标：估计$Y$对$X$的<strong>回归系数</strong>，即估计$E(Y|X)=\mu(X^{T}\beta_0)$中的$\beta_0$</p>
+</blockquote>
+<p>Data:</p>
+<ul>
+<li>$X_i:$ 协变量</li>
+<li>$S:$ 辅助变量，不进入回归模型</li>
+<li>$Y_i$被观测到$R_i=1$, $Y_i$未被观测到$R_i=0$,</li>
+</ul>
+<h2 id="3-1-Review"><a href="#3-1-Review" class="headerlink" title="3.1 Review"></a>3.1 Review</h2><ol>
+<li>不含缺失数据：$\beta_0$可以通过解如下方程得到：</li>
+</ol>
+<p>$$<br>\frac{1}{n} \sum\limits_{i=1}^n U(Y_i,X_i,\beta)=0<br>$$</p>
+<p>其中，$U(Y_i.X_i,\beta)=D(X,\beta){ Y-\mu(X^T\beta）}$是一组估计函数，$D(X,\beta)$提前指定。</p>
+<ol start="2">
+<li>IPW. $\beta_0$通过解如下方程得到：</li>
+</ol>
+<p>$$<br>\frac{1}{n} \sum\limits_{i=1}^n \frac{R_i}{\hat\pi(X_i,S_i)}U(Y_i,X_i,\beta)=0<br>$$</p>
+<p>其中，$\hat\pi(X_i,S_i)$是对$\pi(X_i,S_i)=P(R=1|X,S)=P(R=1|Y,X,s)$的估计</p>
+<ol start="3">
+<li>AIPW.  $\beta_0$通过解如下方程得到：</li>
+</ol>
+<p>$$<br>\frac{1}{n} \sum\limits_{i=1}^n { \frac{R_i}{\hat\pi(X_i,S_i)}U(Y_i,X_i,\beta) - \frac{R_i-\hat\pi(X_i,S_i)}{\hat\pi(X_i,S_i)} \hat U(Y_i,X_i,\beta) }=0<br>$$</p>
+<p>其中，$\hat U(Y_i,X_i,\beta)=D(X,\beta){ \hat a(X,S)-\mu(X^T\beta）}$, $\hat a(X,S)$是$E(Y|X,S)$的估计，与preparation部分的插补法一致。</p>
+<h2 id="3-2-Proposed-estimator"><a href="#3-2-Proposed-estimator" class="headerlink" title="3.2 Proposed estimator"></a>3.2 Proposed estimator</h2><h3 id="3-2-1-模型假设"><a href="#3-2-1-模型假设" class="headerlink" title="3.2.1 模型假设"></a>3.2.1 模型假设</h3>
+
+$\mathcal {P}=\{ \pi^j(\alpha^j):j=1,...,J \}$, $\mathcal {A}=\{ a^k(\gamma^k):K=1,...,K \}$分别是关于$\pi(X,s)$和$E(Y|X,S)$的多重模型，$\alpha^j$和$\gamma^k$为对应的参数，用$\hat\alpha^j$和$\hat\gamma^k$估计，$\hat\alpha^j$最大化：
+$$
+\prod \limits_{i=1}^n{ \{ \pi_{i}^{j}(\alpha^{j}) \}^{R_i} \{ 1-\pi_{i}^{j}(\alpha^{j})\}^{1-R_i} }
+$$
+$\hat\gamma^k$最大化：
+$$
+\prod \limits_{\{ i:R_i=1 \}}p_{Y|X,S}^{k}(y_i|x_i,s_i,\gamma^{k})
+$$
+
+
+
+<h2 id="3-2-2-Equations-of-omega-i"><a href="#3-2-2-Equations-of-omega-i" class="headerlink" title="3.2.2  Equations of $\omega_i$"></a>3.2.2  Equations of $\omega_i$</h2><blockquote>
+<p>与IPW方法相同，但将$w_i$作为complete case 的权重而不是$\frac{1}{n\pi(X_i.S_i)}$，关键问题：$w_i$怎么得到？</p>
+</blockquote>
+<p>记$w(X,S)=\frac{1}{\pi(X,S)}$，==容易验证==：<br>$$<br>E(w(X,S)[\pi_{i}^{j}(\alpha^{j})-E{\pi_{i}^{j}(\alpha^{j})}]|R=1)=0<br>$$</p>
+<p>$$<br>E(w(X,S)[\pi_{i}^{j}(U^k(\beta,\gamma^k)-E{U^k(\beta,\gamma^k)}]|R=1)=0<br>$$</p>
+<p>通过上述两个等式定义$w_i$需要满足的约束<br>$$<br>\sum\limits_{i=1}^m w_i{ \pi_i^j(\hat\alpha^j) - \theta^j(\hat\alpha)}=0 \qquad (j=1,…..,J)<br>\tag 1<br>$$</p>
+<p>$$<br>\sum\limits_{i=1}^m w_i{ U_i^k(\hat\beta^k,\hat\gamma^k) - \eta^k(\hat\beta^k,\hat\gamma^k)}=0 \qquad (k=1,…..,K) \tag 2<br>$$</p>
+<p>其中，$\theta^j(\alpha^{j}) = \frac{1}{n} \sum\limits_{i=1}^n \pi_i^j(\alpha^j)$, $\eta^k(\beta^k,\gamma^k)= \frac{1}{n} \sum\limits_{i=1}^n  U_i^k(\beta^k,\gamma^k)$.</p>
+<p>加上一个regularization约束：<br>$$<br>\sum\limits_{i=1}^m w_i=1,\quad w_i\geq0,(i=1,…,m) \tag 3<br>$$</p>
+<h3 id="3-2-3-Solution-of-w-i"><a href="#3-2-3-Solution-of-w-i" class="headerlink" title="3.2.3 Solution of $w_i$"></a>3.2.3 Solution of $w_i$</h3><p>考虑有约束的规划问题：<br>$$<br>\mathop{max}\limits_{w} \prod\limits_{i=1}^m w_i<br>$$<br>使得 $w_i$ 满足等式**(1)-(3)** </p>
+<p>记$\hat\alpha^T={ (\hat\alpha^1)^T,…,(\hat\alpha^J)^T }$, $\hat\beta^T={ (\hat\beta^1)^T,…,(\hat\beta^K)^T }$ , $\hat\gamma^T={ (\hat\gamma^1)^T,…,(\hat\gamma^K)^T }$,<br>$$<br>\hat g_i(\hat\alpha,\hat\beta,\hat\gamma)^T=[ \pi_i^{1}(\hat\alpha^{1}) -\theta^{1}(\hat\alpha^{1}),…, \pi_i^{J}(\hat\alpha^{J}) -\theta^{J}(\hat\alpha^{J}), {U_i^1(\hat\beta^1,\hat\gamma^1) -  \eta^1(\hat\beta^1,\hat\gamma^1),…,U_i^K(\hat\beta^K,\hat\gamma^K) -  \eta^K(\hat\beta^K,\hat\gamma^K) }]<br>$$<br>采用拉格朗日乘子法解得：<br>$$<br>\hat w_i = \frac{1}{m} \frac{1}{1+\hat\rho^T\hat{g}_i(\hat\alpha,\hat\beta,\hat\gamma)} (i=1,…,m).<br>$$</p>
+<p>其中，$\hat \rho^{T}=(\hat \rho_1,…,\hat \rho_{J+K})$ 满足：<br>$$<br>\sum \limits_{i=1}^m \frac{\hat g_i(\hat\alpha,\hat\beta,\hat\gamma)}{(1+\rho^{T}\hat g_i(\hat\alpha,\hat\beta,\hat\gamma))}=0<br>$$<br><em><strong>Remark:</strong></em> 为什么要最大化$\prod\limits_{i=1}^m w_i$?</p>
+<ul>
+<li>在IPW和AIPW中，当$\hat\pi(X,s)$接近0时，会导致权重$R/{\hat{\pi(X,S)}}$非常大，在这种情形下，模型指定的错误偏差会被放大，从而得到的估计很不稳定，与真实值存在较大偏差</li>
+<li>本文提出的估计$\hat\beta_{MR}$避免了这一问题：因为最大化$\prod\limits_{i=1}^m w_i$使得$w_i$的分布尽量均匀，避免了在某一项上出现很大权重。</li>
+</ul>
+<h3 id="3-2-3-Estimator-of-beta-0"><a href="#3-2-3-Estimator-of-beta-0" class="headerlink" title="3.2.3 Estimator of $\beta_0$"></a>3.2.3 Estimator of $\beta_0$</h3><p>最终满足等式：<br>$$<br>\sum \limits_{i=1}^m \hat{w}_iU(Y_i,X_i,\beta)=0<br>$$</p>
+<p>的$\beta$即为$\beta_0$的估计 $\hat\beta_{MR}$.</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://example.com/2023/12/05/MISSING_DATA/">http://example.com/2023/12/05/MISSING_DATA/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/MISSING-DATA/"># MISSING DATA</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2023/08/30/R/">R语言包的实现——分组数据的回归分析</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+  
+ <div id="gitalk-container"></div>  
+ 
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+ var gitalk = new Gitalk({  
+ clientID: 'b647c2f85009b1355e1d',  
+ clientSecret: 'b034ae0bf07e04f8819c52eb0e948a378dcbf524',  
+ repo: 'Elvais.github.io',  
+ owner: 'Elvais',  
+ admin: 'Elvais',  
+ id: location.pathname,  
+ labels: 'Gitalk'.split(',').filter(l => l),  
+ perPage: 10,  
+ pagerDirection: 'last',  
+ proxy: 'https://netnr-proxy.cloudno.de/https://github.com/login/oauth/access_token',
+ createIssueManually: true,  
+ distractionFreeMode: true  
+ })  
+ gitalk.render('gitalk-container')  
+</script>  
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© WuXin | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
