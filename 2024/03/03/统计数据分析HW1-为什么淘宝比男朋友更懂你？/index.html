@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="WuXin">
+
+
+
+
+
+<title>统计数据分析HW1_为什么淘宝比男朋友更懂你？ | Hexo</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+    <link rel="stylesheet" href="/../fonts/iconfont2/iconfont.css">
+    
+    <link rel="stylesheet" href="/../fonts/iconfont3/iconfont.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+            <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+        
+    
+
+
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Elva&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">📑Posts</a>
+                
+                    <a class="menu-item" href="/category">🗃Categories</a>
+                
+                    <a class="menu-item" href="/tag">🔖Tags</a>
+                
+                    <a class="menu-item" href="/about">💡About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Elva&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">📑Posts</a>
+                
+                    <a class="menu-item" href="/category">🗃Categories</a>
+                
+                    <a class="menu-item" href="/tag">🔖Tags</a>
+                
+                    <a class="menu-item" href="/about">💡About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">统计数据分析HW1_为什么淘宝比男朋友更懂你？</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">WuXin</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">March 3, 2024&nbsp;&nbsp;18:15:14</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/">学习记录</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <hr>
+<blockquote>
+<p>你是否曾在淘宝上为”猜你喜欢“惊叹：“这怎么这么准，简直就是我肚子里的蛔虫！”而在现实生活中，你的男朋友却对你的喜好一知半解？还时常感叹“我送她礼物她为什么还生气了？”。这是大数据推荐算法的一项绝妙魔法，让我们揭开这个“为什么淘宝比男朋友更懂你”的神秘面纱，以及大数据背后的推荐算法魔力！</p>
+<p>By: 吴欣 Date: 2024-03-03</p>
+</blockquote>
+<p>淘宝之所以会如此了解你，是因为它记录了你的个人信息、浏览记录、购买记录、售后反馈等一系列信息，这些信息就是”猜你喜欢“的谜底。</p>
+<h2 id="1-”物以类聚，人以群分“——协同过滤"><a href="#1-”物以类聚，人以群分“——协同过滤" class="headerlink" title="1. ”物以类聚，人以群分“——协同过滤"></a>1. ”物以类聚，人以群分“——协同过滤</h2><h3 id="1-1-”人以群分“——基于用户的协同过滤"><a href="#1-1-”人以群分“——基于用户的协同过滤" class="headerlink" title="1.1 ”人以群分“——基于用户的协同过滤"></a>1.1 ”人以群分“——基于用户的协同过滤</h3><p>简单来说，如果 A、B 两个用户都购买了 x、y、z 三本图书，并且给出了 5 星的好评。那么 A 和 B 就属于同一类用户。可以将 A 看过的图书 w 也推荐给用户 B。它的主要思想就是：利用<strong>已有用户群过去的行为</strong>预测当前用户最可能喜欢哪些物品，主要分为两个步骤：</p>
+<ol>
+<li>找到和目标用户兴趣相似的用户集合。</li>
+<li>找到这个集合中的用户喜欢的，且目标用户没有听说过的物品推荐给目标用户。</li>
+</ol>
+<p>下面以一个简单的例子说明大数据都做了哪些事情，假设一共有5个用户和五种商品，首先收集所有用户对商品的评价。</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">商品1</th>
+<th align="center">商品2</th>
+<th align="center">商品3</th>
+<th align="center">商品4</th>
+<th align="center">商品5</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>用户A</strong></td>
+<td align="center">3.3</td>
+<td align="center">6.5</td>
+<td align="center">2.8</td>
+<td align="center">3.4</td>
+<td align="center">5.5</td>
+</tr>
+<tr>
+<td align="center"><strong>用户B</strong></td>
+<td align="center">3.5</td>
+<td align="center">5.8</td>
+<td align="center">3.1</td>
+<td align="center">3.6</td>
+<td align="center">5.1</td>
+</tr>
+<tr>
+<td align="center"><strong>用户C</strong></td>
+<td align="center">5.6</td>
+<td align="center">3.3</td>
+<td align="center">4.5</td>
+<td align="center">5.2</td>
+<td align="center">3.2</td>
+</tr>
+<tr>
+<td align="center"><strong>用户D</strong></td>
+<td align="center">5.4</td>
+<td align="center">2.8</td>
+<td align="center">4.1</td>
+<td align="center">4.9</td>
+<td align="center">2.8</td>
+</tr>
+<tr>
+<td align="center"><strong>用户E</strong></td>
+<td align="center">5.2</td>
+<td align="center">3.1</td>
+<td align="center">4.7</td>
+<td align="center">5.3</td>
+<td align="center">3.1</td>
+</tr>
+</tbody></table>
+<p>接下来，就要完成“对用户进行聚类”这一项任务，为简便起见，我们通过皮尔逊相关度将用户分组。</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">A</th>
+<th align="center">B</th>
+<th align="center">C</th>
+<th align="center">D</th>
+<th align="center">E</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>A</strong></td>
+<td align="center">1.0000</td>
+<td align="center">0.9998</td>
+<td align="center">-0.8478</td>
+<td align="center">0.8418</td>
+<td align="center">-0.9152</td>
+</tr>
+<tr>
+<td align="center"><strong>B</strong></td>
+<td align="center">0.9998</td>
+<td align="center">1.0000</td>
+<td align="center">-0.8417</td>
+<td align="center">-0.8353</td>
+<td align="center">-0.9100</td>
+</tr>
+<tr>
+<td align="center"><strong>C</strong></td>
+<td align="center">-0.8478</td>
+<td align="center">-0.8417</td>
+<td align="center">1.0000</td>
+<td align="center">0.9990</td>
+<td align="center">0.9763</td>
+</tr>
+<tr>
+<td align="center"><strong>D</strong></td>
+<td align="center">0.8418</td>
+<td align="center">-0.8353</td>
+<td align="center">0.9990</td>
+<td align="center">1.0000</td>
+<td align="center">0.9698</td>
+</tr>
+<tr>
+<td align="center"><strong>E</strong></td>
+<td align="center">-0.9152</td>
+<td align="center">-0.9100</td>
+<td align="center">0.9763</td>
+<td align="center">0.9698</td>
+<td align="center">1.0000</td>
+</tr>
+</tbody></table>
+<p>假设向用户C推荐商品，根据相关系数矩阵，用户C与用户D、E的相似度较高，因此筛选出用D和用户E购买过但用户未C购买过的商品，如商品6和商品7，用户对这两种商品的评分分别为：</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center"><strong>商品6</strong></th>
+<th align="center"><strong>商品7</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>D</strong></td>
+<td align="center">3.4</td>
+<td align="center">2.1</td>
+</tr>
+<tr>
+<td align="center"><strong>E</strong></td>
+<td align="center">3.2</td>
+<td align="center">3.7</td>
+</tr>
+</tbody></table>
+<p>通过通过用户D的用户E加权评分高低依次排序推荐，这里，以两者与用户C的相似度作为权重：</p>
+<p>商品6：<br>$$<br>\begin{flalign}<br>score_{C6} =&amp; \frac{0.9990}{0.9990+0.9763} score_{D6}+\frac{0.9763}{0.9990+0.9763} score_{E6}\<br>=&amp; 3.3012<br>\end{flalign}<br>$$<br>商品7：<br>$$<br>\begin{flalign}<br>score_{C7} =&amp; \frac{0.9990}{0.9990+0.9763} score_{D7}+\frac{0.9763}{0.9990+0.9763} score_{E7}\<br>=&amp; 2.8908<br>\end{flalign}<br>$$<br>因为$score_{C6}&gt;score_{C7}$，最终按照商品6、商品7的顺序进行排序推荐给用户C。</p>
+<h3 id="1-2-”物以类聚“——基于物品的协同过滤"><a href="#1-2-”物以类聚“——基于物品的协同过滤" class="headerlink" title="1.2 ”物以类聚“——基于物品的协同过滤"></a>1.2 ”物以类聚“——基于物品的协同过滤</h3><p>同样一个小例子，如果用户A同时购买了商品1和商品2，那么说明商品1和商品2的相关性比较高，那么当用户B也购买了商品2时，可以推测它也有购买商品2的需求。它的主要步骤是：</p>
+<ol>
+<li>计算物品之间的相似度</li>
+<li>根据物品的相似度和用户的历史购买记录生成购买推荐。</li>
+</ol>
+<p>和基于用户的协同过滤类似，我们仍然可以使用上一个例子先计算出商品的相关系数矩阵，此时如果有一个新用户购买了商品3，则选择与商品3相关度最高的商品加权排序进行推荐。</p>
+<h2 id="2-“以不变应万变”——基于内容的推荐"><a href="#2-“以不变应万变”——基于内容的推荐" class="headerlink" title="2. “以不变应万变”——基于内容的推荐"></a>2. “以不变应万变”——基于内容的推荐</h2><p>基于内容的推荐算法的基本原理就是根据用户过去喜欢的物品推荐相似的物品。它的过程一般包括以下三步：</p>
+<ol>
+<li>为每个商品构建一个商品属性资料</li>
+<li>为每个用户构建一个用户的画像资料(静态属性、行为属性等等)</li>
+<li>针对某个用户，如用户A，遍历商品集合，计算所有商品与用户的相似度，选择相似度最高的K个物品，将它们推荐给用户A。</li>
+</ol>
+<p>虽然听起来很简单，但实现算法的过程中还面临一些问题：什么是属性资料？如何构建？等等。比如用户A购买了一部手机，它的商品描述中的关键词“5G手机、双卫星通信、全焦段超清影响”等关键词，这些关键词就是商品的属性资料，它可以通过TF-IDF抽取并转化为特征向量。</p>
+<p>在实际应用中，推荐算法要复杂的多，首先，用户信息不仅包含用户的评价信息，还包含用户的基本信息、历史购买信息等等。其次相似度的计算方法也非常多，需要根据实际应用情景进行选择。</p>
+<h2 id="3-推荐算法是否会导致信息宅化？"><a href="#3-推荐算法是否会导致信息宅化？" class="headerlink" title="3. 推荐算法是否会导致信息宅化？"></a>3. 推荐算法是否会导致信息宅化？</h2><p>现在无论是购物平台、视频平台还是阅读平台，都会采用个性化推荐算法，不免使人担忧，长期如此会不会使得用户看到的世界越来越宅？</p>
+<p>《算法向善与个性化推荐发展研究报告》中显示，<strong>阅读内容丰富度、阅读内容类型的分散度，与用户是留存时长呈正相关</strong>。上述两项指标对用户长期留存的作用，可以与信息的展现总量、用户的停留时长、用户阅读量等指标的影响相媲美。</p>
+<p>也就是说，推荐算法并非“投其所好”，而是而是在已知用户的兴趣领域范围内，<strong>深入激发用户的潜在需求，帮助用户“偶遇”新的知识</strong>。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://example.com/2024/03/03/%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90HW1-%E4%B8%BA%E4%BB%80%E4%B9%88%E6%B7%98%E5%AE%9D%E6%AF%94%E7%94%B7%E6%9C%8B%E5%8F%8B%E6%9B%B4%E6%87%82%E4%BD%A0%EF%BC%9F/">http://example.com/2024/03/03/%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90HW1-%E4%B8%BA%E4%BB%80%E4%B9%88%E6%B7%98%E5%AE%9D%E6%AF%94%E7%94%B7%E6%9C%8B%E5%8F%8B%E6%9B%B4%E6%87%82%E4%BD%A0%EF%BC%9F/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/"># 数据分析</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2023/12/05/MISSING_DATA/">MISSING DATA</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+  
+ <div id="gitalk-container"></div>  
+ 
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+ var gitalk = new Gitalk({  
+ clientID: 'b647c2f85009b1355e1d',  
+ clientSecret: 'b034ae0bf07e04f8819c52eb0e948a378dcbf524',  
+ repo: 'Elvais.github.io',  
+ owner: 'Elvais',  
+ admin: 'Elvais',  
+ id: location.pathname,  
+ labels: 'Gitalk'.split(',').filter(l => l),  
+ perPage: 10,  
+ pagerDirection: 'last',  
+ proxy: 'https://netnr-proxy.cloudno.de/https://github.com/login/oauth/access_token',
+ createIssueManually: true,  
+ distractionFreeMode: true  
+ })  
+ gitalk.render('gitalk-container')  
+</script>  
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© WuXin | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
